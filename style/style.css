@@ -1,0 +1,549 @@
+/* 
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com 
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+.content h2 {
+	font-size: 125%;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+/*
+reset stylesheet ends here
+*/
+
+html, body{
+	height: 100%;
+}
+body{
+background-color: black;
+}
+
+.wrapper{
+	width:1000px;
+	/*height: 100%;
+	width: 100%;*/
+	margin: 0 auto;
+	display: block;
+}
+.content{
+	padding-left:20px;
+	padding-top:20px;
+	padding-bottom:20px;
+	margin-bottom:10px;
+	background-color:#0F0F0F;
+	max-width:100%;
+	min-height: 400px;
+	padding-bottom: 100px;
+}
+
+h1,h2,h3,h4{
+	color:white;
+}
+p{
+	color:white;
+}
+pre{
+	color:white;
+}
+
+.menu{
+width: 100%;
+margin: -10ex 3ex 3ex 20ex;
+max-width: 800px;
+}
+
+.menu_button{
+text-decoration: none;
+color: white;
+/*background-color: #4876FF;*/
+background-color: #035096;
+padding: 0.95ex;
+border: none;
+}
+
+.logoutButton{
+text-decoration: none;
+color: white;
+background-color: #035096;
+padding: 1ex;
+border: none;
+margin-left:auto;
+}
+
+.toggle_button{
+text-decoration: none;
+color: white;
+background-color: #035096;
+padding: 1ex;
+margin-top:-1ex;
+border: none;
+font-size: 1.9ex;
+}
+
+.menu ul li {
+list-style: none;
+display: inline-block;
+font-size: 3ex;
+}
+
+.featuresSumarry {
+	color:white;
+	margin-bottom:2ex;
+}
+.featuresSumarry {
+	margin-left:3ex;
+}
+
+.menu_logo{
+	max-width: 20ex;
+}
+.menu_logo img{
+scale: 0.6;
+position: relative;
+display: inline-block;
+margin-top: 1ex;
+margin-bottom: 1ex;
+/*display:none;*/
+}
+
+#loginForm{
+	display:none;
+	position: absolute;
+	margin-top:1.8ex;
+	padding-left: 1.5ex;
+	padding-right: 1.2ex;
+	padding-bottom: 1.5ex;
+	border-radius: 0.1ex 20px 25px 25px;
+	background-color: #0F0F0F;
+	border:solid;
+	border-color: #414a4c;
+}
+#loginForm p{
+	font-size: 2ex;
+}
+
+.custom-input
+{
+  border: 2px solid;
+  border-radius: 4px;
+  border-color: #0F0F0F;
+  color:white;
+  background-color: black;
+  
+  width: 22ex;
+}
+
+::placeholder {
+  color: white;
+  font-weight: bold;
+}
+
+.bigger-custom-input
+{
+  border: 2px solid;
+  border-radius: 4px;
+  border-color: #0F0F0F;
+  color:white;
+  background-color: black;
+  
+  width: 26ex;
+  height: 4ex;
+  font-size: 100%;
+}
+
+.bigger-custom-inputIssues
+{
+  border: 2px solid;
+  border-radius: 4px;
+  border-color: #0F0F0F;
+  color:white;
+  background-color: black;
+  
+  width: 26ex;
+  height: 4ex;
+  font-size = 4ex;
+  margin-bottom: 1ex;
+}
+
+
+
+
+
+.login_close{
+	color: red;
+	border: none;
+	margin-left: 23ex;
+	margin-bottom: 1ex;
+	background-color: #414a4c;
+	font-weight: bold;
+}
+.login_close:hover{
+	color: blue;
+}
+.login_button{
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 1.5ex;
+	margin-left: 15ex;
+	padding:0.4ex;
+	margin-bottom:1ex;
+	margin-top:1ex;
+}
+.register_button{
+	text-decoration: none;
+	color: Orange;
+	/*background-color: #4876FF;*/
+	padding-top: 1ex;
+}
+
+.register-form{	
+	text-align:center;
+	
+	padding-left:20ex;
+	margin-top:1.8ex;
+	padding-left: 1.5ex;
+	padding-right: 1.2ex;
+	padding-bottom: 1.5ex;
+	
+}
+
+.white_text{
+	color:white;
+}
+
+.sign-up_button
+{  
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 2.2ex;
+	padding:0.3ex;
+	margin-bottom:1ex;
+	margin-top:1ex;
+	
+}
+.error
+{
+	color:red;
+	text-align:center;
+}
+.sign-upSuccess
+{
+	color:green;
+	text-align:center;
+}
+.projectIcon{
+	width: 10ex;
+	height: auto;
+}
+
+.projectIcon img{
+	display:block;
+	margin-left: 1ex;
+}
+
+#newProjectWindow{
+	display: none;
+	margin-top:2ex;
+	position: absolute;
+	width: 34ex;
+	background-color: #0F0F0F;
+	border:solid;
+	border-color: #414a4c;
+	
+}
+#editWindow
+{
+	margin-left: 2ex;
+}
+
+.create_button{
+	display: inline-block;
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 2ex;
+	margin-left: 23.8ex;
+	padding:0.3ex;
+	margin-bottom:1ex;
+	margin-top:1ex;
+}
+
+.projectWindow{
+	display:inline-block;
+	width: 12ex;
+	margin-right:5ex;
+	margin-bottom: 3ex;
+}
+
+.browseProject
+{
+	background-color: transparent	;
+	border:none;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  border-right:solid;
+  border-bottom: solid;
+  border-color: white;
+  min-height: 200px;
+  overflow: auto;
+  /*resize: both;*/
+  max-height: 40ex;
+  
+}
+.columnTitle
+{
+	text-align:center;
+}
+
+#newIssueWindow
+{
+	display:none;
+	position: absolute;
+	margin-top: 3ex;
+	padding-left: 2ex;
+	padding-right: 3ex;
+	padding-bottom: 2ex;
+	background-color: #0F0F0F;
+}
+
+#account_type
+{
+	background-color: black;
+	color : white;
+}
+
+.details
+{
+	background-color: black;
+	color: white;
+}
+
+.issueButton
+{
+text-decoration: none;
+padding: 1ex;
+border: none;
+display: block;
+}
+.issuePriority
+{
+	display: inline-block;
+	position: reltive;
+	vertical-align: middle;
+}
+
+.issueButton p
+{
+	display: inline-block;
+}
+.issueWindow
+{
+	display: inline-block;
+	width: auto;
+}
+.addIssue
+{
+	margin-top: 3ex;
+	display:inline-block;
+	width: 7ex;
+	height: auto;
+}
+
+.leftCol {
+  flex: 1;
+  border:none;
+  min-height: 200px;
+}
+
+#rightCol{
+  margin-top: 3ex;
+  flex: 3.5;
+  border:none;
+  min-height: 200px;
+}
+
+.noneSelected
+{
+	margin-top: 3ex;
+	font-weight: bold;
+}
+.issueSelected
+{
+	text-decoration: none;
+color: white;
+padding: 1ex;
+border: none;
+display: block;
+}
+
+.infoButton{
+	display: inline-block;
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 2.1ex;
+	margin-left: 1ex;
+	padding:0.5ex;
+	margin-bottom:1ex;
+	margin-top:1ex;
+	border:solid;
+	border-color: black;
+}
+
+#infoWindow{
+	display: block;
+	margin-left: 2ex;
+}
+#displayCode{
+	display: block;
+	margin-left: 2ex;
+}
+.issueInfoFields{
+	display:inline-block;
+	margin-right: 3ex;
+	margin-bottom: 2ex;
+}
+#issueDelete form{
+	display: inline-block;
+}
+.issueDetail{
+	color: white;
+	font-weight: bold;
+	overflow: auto;
+	min-height: 200px;
+	max-width: 600px;
+	resize: both;
+	
+}
+
+.deleteProject
+{
+	display:block;
+	margin-top: 3.7ex;
+	
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 2.1ex;
+	margin-left: 1ex;
+	padding:0.5ex;
+	margin-bottom:1ex;
+	border:solid;
+	border-color: black;
+}
+
+
+
+
+
+
