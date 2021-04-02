@@ -1,4 +1,9 @@
 <?php
+if(!isset($inProjectFile))
+{
+	header("location: projects.php");
+}
+
 echo "<div id='rightCol'>";
 		//$backlog="Backlog";
 		if(!isset($_GET["selectedIssue"]))
