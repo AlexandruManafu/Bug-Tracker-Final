@@ -8,11 +8,12 @@ if(isset($_POST["submit"]))
 	$issueId = $_POST["issueId"];
 	$projectCode = $_POST["projectCode"];
 	$deadline = $_POST["issueDeadline"];
+	$prevPage = $_POST["previousPage"];
 	
 	
 	if(empty($title) || empty($details) || empty($priority))
 	{
-		header("location: ../project.php?project=".$projectCode."&error=emptyInput");
+		header("location: ../".$prevPage."?project=".$projectCode."&error=emptyInput");
 		exit();
 	}
 	
@@ -28,7 +29,7 @@ if(isset($_POST["submit"]))
 		$deadlineArr = explode("-",$deadline);
 		if(!checkdate($deadlineArr[1],$deadlineArr[0],$deadlineArr[2]))
 		{
-			header("location: ../project.php?project=".$projectCode."&error=invalidDate");
+			header("location: ../".$prevPage."?project=".$projectCode."&error=invalidDate");
 			exit();
 		}
 		$deadline = $deadlineArr[2]."-".$deadlineArr[1]."-".$deadlineArr[0]; //now its YYYY-MM-DD
@@ -36,7 +37,7 @@ if(isset($_POST["submit"]))
 	
 	
 	editIssue($con,$title,$priority,$details,$issueId,$deadline);
-	header("location: ../project.php?project=".$projectCode."&selectedIssue=".$issueId);
+	header("location: ../".$prevPage."?project=".$projectCode."&selectedIssue=".$issueId);
 	exit();
 	
 	

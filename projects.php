@@ -7,12 +7,11 @@ include('header.php');
 	<?php
 	require_once "scripts/functions.php";
 		//echo $_SESSION["usersType"];
-	if(!isset($_SESSION["usersType"]))
+	if(!isset($_SESSION["usersId"]))
 	{
 			header("location: ./index.php");
 	}
-	else if(strcmp($_SESSION["usersType"],"manager")==0)
-	{
+
 			//echo "<p>yes</p>";
 	echo "<div class='projectWindow'>";
 			echo "<img class='projectIcon' onclick=toggleWindow('newProjectWindow','inline-block') src='images/icons/add.svg' alt='Create Project' width = 10%>";
@@ -37,14 +36,42 @@ include('header.php');
 
 			echo "</form>";
 		echo "</div>";
-	}
-	else if(strcmp($_SESSION["usersType"],"developer")==0)
+
+		
+
+	require_once 'scripts/database-handler.php';
+	require_once 'scripts/functions.php';
+	
+	function displayProjects($projectsDbResult)
 	{
-		echo "<div class='projectWindow'>";
+		while($row = mysqli_fetch_array($projectsDbResult))
+		{
+			$projectId = $row["projectId"];
+			$projectName = $row["projectName"];
+			$projectCode = $row["projectCode"];
+			$_SESSION['projectCode'] = $projectCode;
+			
+			echo "<div style='margin-top: 2ex;' class='projectWindow'>";
+				echo "<a href='kanban.php?project=".$projectId."'> <img class='projectIcon' src='images/icons/proj.svg' alt='Browse Project' width = 10%></a>";
+				echo "<p>".shortenDisplay($projectName,10)."</p>";
+			echo "</div>";
+		}
+	}
+
+
+	$projects = listProjectsForManager($con,$_SESSION["usersName"]);
+	
+	displayProjects($projects);
+
+	$projects = listProjectsForDeveloper($con,$_SESSION["usersName"]);
+	
+	displayProjects($projects);
+	
+	
+	echo "<div class='projectWindow'>";
 			echo "<img class='projectIcon' onclick=toggleWindow('newProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>";
 			echo "<p>Join Project</p>";
-		
-		
+			
 		echo "<div id='newProjectWindow'>";
 		echo "<form action = 'scripts/joinProject-script.php' method='post'>";
 			echo "<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:2.5ex;' placeholder = 'Project Code'><br>";
@@ -64,34 +91,12 @@ include('header.php');
 			echo "</form>";
 		echo "</div>";
 		
-	}
-		
-		
-	echo "</div>";
-
-	require_once 'scripts/database-handler.php';
-	require_once 'scripts/functions.php';
-	if(strcmp($_SESSION["usersType"],"manager")==0)
-	{
-		$projects = listProjectsForManager($con,$_SESSION["usersName"]);
-	}
-	else if(strcmp($_SESSION["usersType"],"developer")==0)
-	{
-		$projects = listProjectsForDeveloper($con,$_SESSION["usersName"]);
-	}
 	
-	while($row = mysqli_fetch_array($projects))
-	{
-		$projectId = $row["projectId"];
-		$projectName = $row["projectName"];
-		$projectCode = $row["projectCode"];
-		$_SESSION['projectCode'] = $projectCode;
-		
-		echo "<div class='projectWindow'>";
-			echo "<a href='project.php?project=".$projectId."'> <img class='projectIcon' src='images/icons/proj.svg' alt='Browse Project' width = 10%></a>";
-			echo "<p>".shortenDisplay($projectName,10)."</p>";
 		echo "</div>";
-	}
+	
+	
+
+	
 	?>
 	
 	

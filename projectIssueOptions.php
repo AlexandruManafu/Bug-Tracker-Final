@@ -17,80 +17,83 @@ echo "<div id='rightCol'>";
 			
 			displayButton("exclusiveToggleWindow('confirm','infoWindow','block');","View Issue Info");
 			
-			if($_SESSION["usersType"] == "manager" && !issueInPlace($con,$_GET["selectedIssue"],"Completed"))
+			if(!issueInPlace($con,$_GET["selectedIssue"],"Completed") && $userRole == "manager" )
 			{
 				displayButton("exclusiveToggleWindow('confirm','editWindow','block');","Edit Issue");
 			}
-			else if($_SESSION["usersType"] == "developer" &&
+			else if($userRole == "developer" &&
 					((isIssueDevelopedBy($con, $_GET["selectedIssue"],$_SESSION["usersName"]) || isIssueCreatedBy($con,$_GET["selectedIssue"],$_SESSION["usersName"])) 
 					&& !issueInPlace($con,$_GET["selectedIssue"],"Completed")))
 			{
 				displayButton("exclusiveToggleWindow('confirm','editWindow','block');","Edit Issue");
 			}
 			
-			if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $_SESSION["usersType"] == "manager")
+			if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 				displayButton("exclusiveToggleWindow('confirm','issueMove','block');","Move Issue");
 			}
-			else if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $_SESSION["usersType"] == "developer" && isIssueCreatedBy($con,$_GET["selectedIssue"],$_SESSION["usersName"]) )
+			else if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $userRole == "developer" && isIssueCreatedBy($con,$_GET["selectedIssue"],$_SESSION["usersName"]) )
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 			}
 			
 			
-			if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $_SESSION["usersType"] == "manager")
+			if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issuePostpone','block');", "Postpone Issue");
 			}			
-			else if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $_SESSION["usersType"] == "developer")
+			else if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "developer")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueUpdate','block');", "Update Status");
 			}
 			
 			
-			if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $_SESSION["usersType"] == "developer")
+			if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "developer")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueTesting','block');", "Update Status");
 			}
-			else if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $_SESSION["usersType"] == "manager")
+			else if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueAbandon','block');", "Abandon");
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");
 			}
 			
-			if(issueInPlace($con,$_GET["selectedIssue"],"Testing") && $_SESSION["usersType"] == "manager")
+			if(issueInPlace($con,$_GET["selectedIssue"],"Testing") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueAbandon','block');", "Abandon");
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");
 			}
 				
-			displayConfirmationWindow("issueDelete","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueDelete","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to delete the selected issue?","targetPlace","Delete");
 			
-			displayConfirmationWindow("issueMove","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueMove","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to move the selected issue to 'To Do' ?","targetPlace","To_Do");
 			
-			displayConfirmationWindow("issuePostpone","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issuePostpone","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to move the selected issue to 'Backlog' ?","targetPlace","Backlog");
 			
-			displayConfirmationWindow("issueUpdate","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueUpdate","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to move the selected issue to 'In Progress' ?","targetPlace","In_Progress");
 			
-			displayConfirmationWindow("issueTesting","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueTesting","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to move the selected issue to 'Testing' ?","targetPlace","Testing");
 			
-			displayConfirmationWindow("issueAbandon","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueAbandon","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to abandon the selected issue ?","targetPlace","Abandoned");
 			
-			displayConfirmationWindow("issueComplete","scripts/updateIssue-script.php",$issue,$code,
+			displayConfirmationWindow("issueComplete","scripts/updateIssue-script.php",$currentPage,$issue,$code,
 			"Are you sure you want to mark the issue as Completed ?","targetPlace","Completed");
 					
 						
 			echo "<div class='confirm' id='editWindow' style= 'display:none;'>";
 			echo "<form action = 'scripts/editIssue-script.php' method='post'>";
+			
+				echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
 				echo "<input type='hidden' name='issueId' value=".$_GET["selectedIssue"].">";
 				echo "<input type='hidden' name='projectCode' value=".$code.">";
+				
 				echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='issueTitle' value='".$issue['issueTitle']."' placeholder = 'Issue Title'><br>";
 				echo "<p style='margin-top: 1ex;margin-bottom: 1ex;'>Issue Priority: </p>";
 				echo "<select name='issuePriority' id='account_type'>";
@@ -116,7 +119,7 @@ echo "<div id='rightCol'>";
 						
 
 				echo "</select>";
-				if(isset($_SESSION["usersType"]) && $_SESSION["usersType"]=="manager")
+				if(isset($_SESSION["usersId"]) && $userRole=="manager")
 				{
 					echo "<p style='margin-top: 1ex;margin-bottom: 1ex;'>Deadline (day-month-year): </p>";
 

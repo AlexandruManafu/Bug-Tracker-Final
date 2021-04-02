@@ -150,7 +150,7 @@ function loginUser($con,$user,$password)
 		session_start();
 		$_SESSION["usersId"] = $userExists["usersId"];
 		$_SESSION["usersName"] = $userExists["usersName"];
-		$_SESSION["usersType"] = $userExists["usersType"];
+		$_SESSION["currentPage"] = "kanban.php";
 		
 		header("location: ..?error=loginSuccess");
 		
@@ -648,10 +648,40 @@ function editIssue($con,$newTitle,$newPriority,$newDetails,$issueId,$issueDeadli
 //##########################################################################################
 // Functions that display things go below
 
-function displayConfirmationWindow($elementId,$formAction,$issue,$projectCode,$message,$nameHidden,$valueHidden)
+
+function displayIssue($issue,$projectCode,$size,$maxTextLen)
+{
+	if($issue["issuePriority"]==1)
+	{
+		$color = "green";
+	}
+	else if($issue["issuePriority"]==2)
+	{
+		$color = "orange";
+	}
+	else if($issue["issuePriority"]==3)
+	{
+		$color = "red";
+	}
+	else
+	{
+		$color = "grey";
+	}
+			
+	echo "<a class='issueButton' href=".$_SESSION["currentPage"]."?project=".$projectCode."&selectedIssue=".$issue["issueId"].
+					
+		">
+		<img class='issuePriority' src='images/icons/circle-".$color.".png' alt='Issue Priority' width =".$size."%> 
+		<p>".shortenDisplay($issue['issueTitle'],$maxTextLen)."</p>
+		</a>";		
+	}
+
+function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectCode,$message,$nameHidden,$valueHidden)
 {
 	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
 	echo "<form action = ".$formAction." method='post'>";
+	
+		echo "<input type='hidden' name='previousPage' value=".$previousPage.">";
 		if($issue!=NULL)
 		{
 			echo "<input type='hidden' name='issueId' value=".$issue["issueId"].">";
@@ -683,6 +713,68 @@ function dateDisplay($issueDate)
 {
 	$dateArr = explode("-",$issueDate);
 	return $dateArr[2]."-".$dateArr[1]."-".$dateArr[0];
+}
+
+
+function createIssueDisplay($currentPage,$projectCode,$error)
+{
+	echo "<div class='row'>";
+		echo "<div class='leftCol'>";
+			echo "<img class='addIssue' onclick=toggleWindow('newIssueWindow','inline-block');changeFlexValue('rightCol','newIssueWindow',3.5,2);changeMarginValue('deleteProject','newIssueWindow',3.7,25); src='images/icons/add.svg' alt='Create Project' width = 10%>";
+			
+			
+			echo "<div class='confirm' id='newIssueWindow' style='display: none;'>";
+			echo "<form action = 'scripts/createIssue-script.php' method='post'>";
+			
+				echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
+				echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
+				echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='issueTitle' placeholder = 'Issue Title'><br>";
+				echo "<p style='margin-bottom: 1ex;'>Issue Priority: </p>";
+				echo "<select name='issuePriority' id='account_type'>";
+						echo "<option value=''>Select an option</option>";
+						echo "<option value='1'>Low</option>";
+						echo "<option value='2'>Medium</option>";
+						echo "<option value='3'>High</option>";
+						
+
+				echo "</select>";
+				echo "<br><br>";
+				echo "<textarea class='details' name='issueDetails' rows='5'  placeholder = 'Details'></textarea><br>";
+				
+				
+				echo "<button class='create_button' type='text' name='submit'>Create</button>";
+				
+				
+				echo "</form>";
+			echo "</div>";
+			if(isset($error) && $error=="emptyInput" )
+			{	
+				echo "<p class=error style='margin-top:3ex;' = error>No inputs can be empty</p>";
+			}
+			if(isset($error) && $error=="invalidDate" )
+			{	
+				echo "<p class=error style='margin-top:3ex;' = error>Date entered is invalid</p>";
+			}
+			/*
+			if($userRole == "manager")
+			{
+				displaySpecialButton("deleteProject","exclusiveToggleWindow('confirm','deleteProjectWindow','block');","Delete Project");
+				displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Project Join Code");
+			}
+			echo "<div class=confirm id=displayCode style='display:none;'>
+					<p>The join code for the current project is:</p><br>
+					<p>".$projectCode."</p>
+				</div>
+			";
+			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$code,
+			"Are you sure you want to delete the project with all its issues ?","targetPlace","Delete_Project");
+			if(isset($_GET["error"]) && $_GET["error"]=="existActiveIssues" )
+				{	
+					echo "<p class = error>Projects with active issues cannot be deleted.</p>";
+				}
+			*/
+			echo "</div>";
+
 }
 
 

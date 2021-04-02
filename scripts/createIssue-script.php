@@ -7,11 +7,12 @@ if(isset($_POST["submit"]))
 	$priority = $_POST["issuePriority"];
 	$user = $_SESSION["usersName"];
 	$projectCode = $_POST["projectCode"];
+	$prevPage = $_POST["previousPage"];
 	
 	
 	if(empty($title) || empty($details) || empty($priority))
 	{
-		header("location: ../project.php?project=".$projectCode."&error=emptyInput");
+		header("location: ../".$prevPage."?project=".$projectCode."&error=emptyInput");
 		exit();
 	}
 	
@@ -19,7 +20,7 @@ if(isset($_POST["submit"]))
 	require_once 'functions.php';
 	
 	createIssue($con,$title,$details,$priority,$user,$projectCode);
-	header("location: ../project.php?project=".$projectCode);
+	header("location: ../".$prevPage."?project=".$projectCode);
 	exit();
 	
 	
