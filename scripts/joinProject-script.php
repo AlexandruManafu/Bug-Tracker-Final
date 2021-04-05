@@ -8,7 +8,7 @@ if(isset($_POST["submit"]))
 	require_once 'database-handler.php';
 	require_once 'functions.php';
 	
-	if(projectExists($con,$code)===true)
+	if(projectExists($con,$code)===true && !isDevInProject($con,$code,$user) && !isOwnerProject($con,$code,$user))
 	{
 		echo "yes";
 		addDevToProject($con,$code,$user);

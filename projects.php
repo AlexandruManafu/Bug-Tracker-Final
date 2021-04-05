@@ -69,22 +69,22 @@ include('header.php');
 	
 	
 	echo "<div class='projectWindow'>";
-			echo "<img class='projectIcon' onclick=toggleWindow('newProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>";
+			echo "<img class='projectIcon' onclick=toggleWindow('joinProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>";
 			echo "<p>Join Project</p>";
 			
-		echo "<div id='newProjectWindow'>";
+		echo "<div id='joinProjectWindow'>";
 		echo "<form action = 'scripts/joinProject-script.php' method='post'>";
 			echo "<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:2.5ex;' placeholder = 'Project Code'><br>";
 			echo "<button class='create_button' type='text' style='margin-left: 17ex;' name='submit'>Join Project</button>";
 
 				if(isset($_GET["error"]) && $_GET["error"] == "projectJoined")
 				{
-					callJavascript("toggleWindow('newProjectWindow','inline-block')");
+					callJavascript("toggleWindow('joinProjectWindow','inline-block')");
 					echo "<p class='sign-upSuccess' style='display: inline-block; margin-left:-20ex;'>Success</p>";
 				}
 				else if(isset($_GET["error"]) && $_GET["error"] == "projectNotFound")
 				{
-					callJavascript("toggleWindow('newProjectWindow','inline-block')");
+					callJavascript("toggleWindow('joinProjectWindow','inline-block')");
 					echo "<p class='error' style='display: inline-block; margin-left:-25ex;'>Invalid Code</p>";
 				}
 

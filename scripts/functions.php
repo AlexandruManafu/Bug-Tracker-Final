@@ -755,24 +755,24 @@ function createIssueDisplay($currentPage,$projectCode,$error)
 			{	
 				echo "<p class=error style='margin-top:3ex;' = error>Date entered is invalid</p>";
 			}
-			/*
-			if($userRole == "manager")
-			{
+			
+			//if($userRole == "manager")
+			//{
 				displaySpecialButton("deleteProject","exclusiveToggleWindow('confirm','deleteProjectWindow','block');","Delete Project");
 				displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Project Join Code");
-			}
+			//}
 			echo "<div class=confirm id=displayCode style='display:none;'>
 					<p>The join code for the current project is:</p><br>
 					<p>".$projectCode."</p>
 				</div>
 			";
-			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$code,
+			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$projectCode,
 			"Are you sure you want to delete the project with all its issues ?","targetPlace","Delete_Project");
 			if(isset($_GET["error"]) && $_GET["error"]=="existActiveIssues" )
 				{	
 					echo "<p class = error>Projects with active issues cannot be deleted.</p>";
 				}
-			*/
+			
 			echo "</div>";
 
 }
