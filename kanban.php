@@ -11,6 +11,7 @@ include('header.php');
 		{
 			$currentPage = basename(__FILE__);
 			$_SESSION["currentPage"] = $currentPage;
+			$inProjectFile = true;
 			if( isOwnerProject($con,$_GET["project"],$_SESSION["usersName"]) )
 			{
 				$code = $_GET["project"];
