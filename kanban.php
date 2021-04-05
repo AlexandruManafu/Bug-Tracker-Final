@@ -82,11 +82,11 @@ include('header.php');
 	
 		if(isset($_GET["error"]))
 		{
-			createIssueDisplay($currentPage,$projectCode,$_GET["error"]);
+			createIssueDisplay($currentPage,$code,$_GET["error"]);
 		}
 			else
 		{
-			createIssueDisplay($currentPage,$projectCode,NULL);
+			createIssueDisplay($currentPage,$code,NULL);
 		}
 				
 		require_once "projectIssueOptions.php";
