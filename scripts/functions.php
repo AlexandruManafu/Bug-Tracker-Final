@@ -1,9 +1,9 @@
 <?php
 
 
-function isEmpty($user,$email,$password,$passwordAgain,$type)
+function isEmpty($user,$email,$password,$passwordAgain)
 {
-	if(empty($user) || empty($email) || empty($password) || empty($passwordAgain) || empty($type))
+	if(empty($user) || empty($email) || empty($password) || empty($passwordAgain))
 	{
 		return true;
 	}
@@ -100,9 +100,9 @@ function invalidPassword($password,$passwordAgain)
 	}
 }
 
-function createUser($con,$user,$email,$password,$type)
+function createUser($con,$user,$email,$password)
 {
-	$sql = "INSERT INTO users(usersName, usersEmail, usersType, usersPassword ) VALUES(?, ?, ?, ?);";
+	$sql = "INSERT INTO users(usersName, usersEmail, usersPassword ) VALUES(?, ?, ?);";
 	$stmt = mysqli_stmt_init($con);
 	if(!mysqli_stmt_prepare($stmt,$sql))
 	{
@@ -111,7 +111,7 @@ function createUser($con,$user,$email,$password,$type)
 	
 	$hashedPassword = password_hash($password,PASSWORD_DEFAULT);
 		
-	mysqli_stmt_bind_param($stmt, "ssss", $user,$email,$type,$hashedPassword); 
+	mysqli_stmt_bind_param($stmt, "sss", $user,$email,$hashedPassword); 
 	mysqli_stmt_execute($stmt);
 		
 	mysqli_stmt_close($stmt);
@@ -207,7 +207,6 @@ function createDefualtTables($con)
 		usersId int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
 		usersName VARCHAR(128) NOT NULL,
 		usersEmail VARCHAR(128) NOT NULL,
-		usersType VARCHAR(32) NOT NULL,
 		usersPassword VARCHAR(128) NOT NULL
 	);";
 	$sql .= "CREATE TABLE projects
@@ -289,6 +288,22 @@ function listIssue($con, $issueId)
 	$sql = 'SELECT * FROM issues WHERE issueId=?;';
 	$result = listEntries($con,$sql,$issueId);
 	return $result;
+}
+
+
+function getProjectCode($con, $projectId)
+{
+	$sql = 'SELECT projectCode FROM projects WHERE projectId=?;';
+	$result = listEntries($con,$sql,$projectId);
+	$row = mysqli_fetch_array($result);
+	return $row["projectCode"];
+}
+function getProjectId($con, $projectCode)
+{
+	$sql = 'SELECT projectId FROM projects WHERE projectCode=?;';
+	$result = listEntries($con,$sql,$projectCode);
+	$row = mysqli_fetch_array($result);
+	return $row["projectId"];
 }
 
 function entryExists($con,$sql,$placeholder1,$placeholder2)
@@ -645,11 +660,12 @@ function editIssue($con,$newTitle,$newPriority,$newDetails,$issueId,$issueDeadli
 		addDeadline($con, $issueDeadline, $issueId);
 }
 
+
 //##########################################################################################
 // Functions that display things go below
 
 
-function displayIssue($issue,$projectCode,$size,$maxTextLen)
+function displayIssue($issue,$projectId,$size,$maxTextLen)
 {
 	if($issue["issuePriority"]==1)
 	{
@@ -668,7 +684,7 @@ function displayIssue($issue,$projectCode,$size,$maxTextLen)
 		$color = "grey";
 	}
 			
-	echo "<a class='issueButton' href=".$_SESSION["currentPage"]."?project=".$projectCode."&selectedIssue=".$issue["issueId"].
+	echo "<a class='issueButton' href=".$_SESSION["currentPage"]."?project=".$projectId."&selectedIssue=".$issue["issueId"].
 					
 		">
 		<img class='issuePriority' src='images/icons/circle-".$color.".png' alt='Issue Priority' width =".$size."%> 
@@ -676,7 +692,7 @@ function displayIssue($issue,$projectCode,$size,$maxTextLen)
 		</a>";		
 	}
 
-function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectCode,$message,$nameHidden,$valueHidden)
+function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$nameHidden,$valueHidden)
 {
 	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
 	echo "<form action = ".$formAction." method='post'>";
@@ -686,6 +702,7 @@ function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$
 		{
 			echo "<input type='hidden' name='issueId' value=".$issue["issueId"].">";
 		}
+		echo "<input type='hidden' name='projectId' value=".$projectId.">";
 		echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
 		if($nameHidden!=null)
 		{
@@ -716,7 +733,7 @@ function dateDisplay($issueDate)
 }
 
 
-function createIssueDisplay($currentPage,$projectCode,$error)
+function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRole)
 {
 	echo "<div class='row'>";
 		echo "<div class='leftCol'>";
@@ -727,7 +744,7 @@ function createIssueDisplay($currentPage,$projectCode,$error)
 			echo "<form action = 'scripts/createIssue-script.php' method='post'>";
 			
 				echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
-				echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
+				echo "<input type='hidden' name='projectId' value=".$projectId.">";
 				echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='issueTitle' placeholder = 'Issue Title'><br>";
 				echo "<p style='margin-bottom: 1ex;'>Issue Priority: </p>";
 				echo "<select name='issuePriority' id='account_type'>";
@@ -756,22 +773,22 @@ function createIssueDisplay($currentPage,$projectCode,$error)
 				echo "<p class=error style='margin-top:3ex;' = error>Date entered is invalid</p>";
 			}
 			
-			//if($userRole == "manager")
-			//{
+			if($userRole == "manager")
+			{
 				displaySpecialButton("deleteProject","exclusiveToggleWindow('confirm','deleteProjectWindow','block');","Delete Project");
 				displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Project Join Code");
-			//}
+			}
 			echo "<div class=confirm id=displayCode style='display:none;'>
 					<p>The join code for the current project is:</p><br>
 					<p>".$projectCode."</p>
 				</div>
 			";
-			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$projectCode,
+			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$projectId,$projectCode,
 			"Are you sure you want to delete the project with all its issues ?","targetPlace","Delete_Project");
-			if(isset($_GET["error"]) && $_GET["error"]=="existActiveIssues" )
-				{	
-					echo "<p class = error>Projects with active issues cannot be deleted.</p>";
-				}
+			if(isset($error) && $error=="existActiveIssues" )
+			{	
+				echo "<p class = error>Projects with active issues cannot be deleted.</p>";
+			}
 			
 			echo "</div>";
 

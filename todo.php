@@ -12,16 +12,16 @@ include('header.php');
 			$currentPage = basename(__FILE__);
 			$_SESSION["currentPage"] = $currentPage;
 			$inProjectFile = true;
+			$code = $_GET["project"];
+			$projectCode = getProjectCode($con,$code);
 			if( isOwnerProject($con,$_GET["project"],$_SESSION["usersName"]) )
 			{
-				$code = $_GET["project"];
-				$projectCode = $_SESSION['projectCode'];
 				$userRole = "manager";
 			}
-			else if( isDevInProject($con,$_GET["project"],$_SESSION["usersName"]) )
+			else if( isDevInProject($con,$projectCode,$_SESSION["usersName"]) )
 			{
 				$code = $_GET["project"];
-				$projectCode = $_SESSION['projectCode'];
+				$projectCode = getProjectCode($con,$code);
 				$userRole = "developer";
 			}
 			else
@@ -52,14 +52,14 @@ include('header.php');
 		
 		if(isset($_GET["error"]))
 		{
-			createIssueDisplay($currentPage,$code,$_GET["error"]);
+			createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
 		}
-		else
+			else
 		{
-			createIssueDisplay($currentPage,$code,NULL);
+			createIssueDisplay($currentPage,$code,$projectCode,NULL,$userRole);
 		}
-			
-			require_once "projectIssueOptions.php";
+				
+		require_once "projectIssueOptions.php";
 			
 		?>
 	

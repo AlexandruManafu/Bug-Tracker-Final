@@ -11,6 +11,7 @@
 
 	 <link id="pagestyle" rel="stylesheet" type="text/css" href="./style/style.css">
 	 <link rel = "stylesheet" href = "./style/capbox.css"> 
+	 <link rel = "stylesheet" href="style/todo.css">
 	 <script src="scripts/javascript.js"></script>
 	 <link rel="shortcut icon" type="image/png" href="img/icons/favicon.png">
 	 
@@ -29,13 +30,13 @@
 			if(isset($_SESSION["usersId"])===false)
 			{
 				echo "<li><a class='menu_button' href='register.php'>Sign-Up</a></li>";
-				echo "<li class='rightSpace'>.</li>";
+				echo "<li style='visibility: hidden;' class='rightSpace'>.</li>";
 				echo "<li> <button class='toggle_button' onclick=toggleWindow('loginForm','block') class='menu_button'> Login </button>  </li>";
 			}
 			else
 			{
 				echo "<li><a class='menu_button' href='projects.php'>Projects</a></li>";
-				echo "<li class='rightSpace'>.</li>";
+				echo "<li style='visibility: hidden;' class='rightSpace'>.</li>";
 				echo "<li><a class='menu_button' style='margin-left: auto;' href='scripts/logout-script.php'>Log Out</a></li>";
 			}
 				

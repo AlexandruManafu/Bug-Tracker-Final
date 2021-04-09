@@ -8,9 +8,8 @@ if(isset($_POST["submit"]))
 	require_once 'database-handler.php';
 	require_once 'functions.php';
 	
-	if(projectExists($con,$code)===true && !isDevInProject($con,$code,$user) && !isOwnerProject($con,$code,$user))
+	if(projectExists($con,$code) && !isDevInProject($con,$code,$user) && !isOwnerProject($con,$code,$user) )
 	{
-		echo "yes";
 		addDevToProject($con,$code,$user);
 		header("location: ../projects.php?error=projectJoined");
 	}

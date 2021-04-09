@@ -1,7 +1,8 @@
 <?php
 if(isset($_POST["no"]) && isset($_POST["issueId"]))
 {
-	$code = $_POST["projectCode"];
+	$code = $_POST["projectId"];
+	$projectCode = $_POST["projectCode"];
 	$issueId = $_POST["issueId"];
 	$prevPage = $_POST["previousPage"];
 	header("location: ../".$prevPage."?project=".$code."&selectedIssue=".$issueId);
@@ -19,7 +20,10 @@ else if(isset($_POST["yes"]))
 	
 	$user = $_SESSION["usersName"];
 	$issueId = $_POST["issueId"];
-	$code = $_POST["projectCode"];
+	
+	$code = $_POST["projectId"];
+	$projectCode = $_POST["projectCode"];
+	
 	$newPlace = $_POST["targetPlace"];
 	$prevPage = $_POST["previousPage"];
 	
@@ -70,13 +74,13 @@ else if(isset($_POST["yes"]))
 	}
 	else if($newPlace == "Delete_Project")
 	{
-		if(existsIssueInPlace($con, "To Do", $code) || existsIssueInPlace($con, "In Progress", $code) || existsIssueInPlace($con, "Testing", $code))
+		if(existsIssueInPlace($con, "To Do", $projectCode) || existsIssueInPlace($con, "In Progress", $projectCode) || existsIssueInPlace($con, "Testing", $projectCode))
 		{
 			header("location: ../".$prevPage."?project=".$code."&error=existActiveIssues");
 			exit();
 		}
-		deleteProject($con, $code);
-		header("location: ../".$prevPage);
+		deleteProject($con, $projectCode);
+		header("location: ../projects.php");
 		exit();
 	}
 	

@@ -12,16 +12,16 @@ include('header.php');
 			$currentPage = basename(__FILE__);
 			$_SESSION["currentPage"] = $currentPage;
 			$inProjectFile = true;
+			$code = $_GET["project"];
+			$projectCode = getProjectCode($con,$code);
 			if( isOwnerProject($con,$_GET["project"],$_SESSION["usersName"]) )
 			{
-				$code = $_GET["project"];
-				$projectCode = $_SESSION['projectCode'];
 				$userRole = "manager";
 			}
-			else if( isDevInProject($con,$_GET["project"],$_SESSION["usersName"]) )
+			else if( isDevInProject($con,$projectCode,$_SESSION["usersName"]) )
 			{
 				$code = $_GET["project"];
-				$projectCode = $_SESSION['projectCode'];
+				$projectCode = getProjectCode($con,$code);
 				$userRole = "developer";
 			}
 			else
@@ -37,11 +37,12 @@ include('header.php');
 		
 		function displayIssues($con,$issues,$projectCode)
 		{
+			$code = getProjectId($con,$projectCode);
 			if(isset($issues))
 			{
 				while($row = mysqli_fetch_array($issues))
 				{
-					displayIssue($row,$projectCode,10,15);
+					displayIssue($row,$code,10,15);
 					
 				}
 			}
@@ -67,26 +68,26 @@ include('header.php');
 		}
 		echo "<div class='row'>";
 		
-			displayColumn($con,"Backlog",$code);
+			displayColumn($con,"Backlog",$projectCode);
 			
-			displayColumn($con,"To Do",$code);
+			displayColumn($con,"To Do",$projectCode);
 		
-			displayColumn($con,"In Progress",$code);
+			displayColumn($con,"In Progress",$projectCode);
 			
-			displayColumn($con,"Testing",$code);
+			displayColumn($con,"Testing",$projectCode);
 			
-			displayColumn($con,"Completed",$code);
+			displayColumn($con,"Completed",$projectCode);
 			
 		echo "</div>"; 
 	
 	
 		if(isset($_GET["error"]))
 		{
-			createIssueDisplay($currentPage,$code,$_GET["error"]);
+			createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
 		}
 			else
 		{
-			createIssueDisplay($currentPage,$code,NULL);
+			createIssueDisplay($currentPage,$code,$projectCode,NULL,$userRole);
 		}
 				
 		require_once "projectIssueOptions.php";

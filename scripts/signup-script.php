@@ -7,14 +7,11 @@ if(isset($_POST["submit"]))
 	$email = $_POST["email"];
 	$password = $_POST["pwd"];
 	$passwordAgain = $_POST["pwdrepeat"];
-	$type = $_POST["type"];
-	
-	//echo($type); works
 	
 	require_once 'database-handler.php';
 	require_once 'functions.php';
 	
-	if(isEmpty($user,$email,$password,$passwordAgain,$type)===true)
+	if(isEmpty($user,$email,$password,$passwordAgain)===true)
 	{
 		header("location: ../register.php?error=emptyField");
 	}
@@ -34,7 +31,7 @@ if(isset($_POST["submit"]))
 	{
 		header("location: ../register.php?error=invalidPassword");
 	}
-	else createUser($con,$user,$email,$password,$type);
+	else createUser($con,$user,$email,$password);
 	
 }
 else //redirect user back if he tries to access this page by inputing it on the bar

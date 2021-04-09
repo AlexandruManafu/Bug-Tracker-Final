@@ -2,11 +2,16 @@
 if(isset($_POST["submit"]))
 {
 	session_start();
+	
+	require_once 'database-handler.php';
+	require_once 'functions.php';
+	
 	$title = $_POST["issueTitle"];
 	$details = $_POST["issueDetails"];
 	$priority = $_POST["issuePriority"];
 	$user = $_SESSION["usersName"];
-	$projectCode = $_POST["projectCode"];
+	$projectId = $_POST["projectId"];
+	$projectCode = getProjectCode($con,$projectId);
 	$prevPage = $_POST["previousPage"];
 	
 	
@@ -16,11 +21,10 @@ if(isset($_POST["submit"]))
 		exit();
 	}
 	
-	require_once 'database-handler.php';
-	require_once 'functions.php';
+	
 	
 	createIssue($con,$title,$details,$priority,$user,$projectCode);
-	header("location: ../".$prevPage."?project=".$projectCode);
+	header("location: ../".$prevPage."?project=".$projectId);
 	exit();
 	
 	

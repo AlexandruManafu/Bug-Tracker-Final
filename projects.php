@@ -18,7 +18,7 @@ include('header.php');
 			echo "<p>New Project</p>";
 		
 		
-		echo "<div id='newProjectWindow'>";
+		echo "<div class='projectField' id='newProjectWindow'>";
 		echo "<form action = 'scripts/createProject-script.php' method='post'>";
 			echo "<input class='bigger-custom-input' type='text' name='projectTitle' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>";
 			echo "<button class='create_button' type='text' name='submit'>Create</button>";
@@ -49,7 +49,6 @@ include('header.php');
 			$projectId = $row["projectId"];
 			$projectName = $row["projectName"];
 			$projectCode = $row["projectCode"];
-			$_SESSION['projectCode'] = $projectCode;
 			
 			echo "<div style='margin-top: 2ex;' class='projectWindow'>";
 				echo "<a href='kanban.php?project=".$projectId."'> <img class='projectIcon' src='images/icons/proj.svg' alt='Browse Project' width = 10%></a>";
@@ -62,20 +61,15 @@ include('header.php');
 	$projects = listProjectsForManager($con,$_SESSION["usersName"]);
 	
 	displayProjects($projects);
-
-	$projects = listProjectsForDeveloper($con,$_SESSION["usersName"]);
-	
-	displayProjects($projects);
-	
 	
 	echo "<div class='projectWindow'>";
 			echo "<img class='projectIcon' onclick=toggleWindow('joinProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>";
 			echo "<p>Join Project</p>";
 			
-		echo "<div id='joinProjectWindow'>";
+		echo "<div class='projectField' id='joinProjectWindow'>";
 		echo "<form action = 'scripts/joinProject-script.php' method='post'>";
-			echo "<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:2.5ex;' placeholder = 'Project Code'><br>";
-			echo "<button class='create_button' type='text' style='margin-left: 17ex;' name='submit'>Join Project</button>";
+			echo "<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>";
+			echo "<button class='create_button' type='text' name='submit'>Join</button>";
 
 				if(isset($_GET["error"]) && $_GET["error"] == "projectJoined")
 				{
@@ -90,6 +84,10 @@ include('header.php');
 
 			echo "</form>";
 		echo "</div>";
+		
+	$projects = listProjectsForDeveloper($con,$_SESSION["usersName"]);
+	
+	displayProjects($projects);
 		
 	
 		echo "</div>";

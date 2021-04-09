@@ -1,4 +1,5 @@
 <?php
+
 if(!isset($inProjectFile))
 {
 	header("location: projects.php");
@@ -10,14 +11,14 @@ echo "<div id='rightCol'>";
 		{
 			echo "<p class='noneSelected'>No issue selected</p>";
 		}
-		else if(isset($_GET["selectedIssue"]) && issueBelongsToProject($con, $_GET["selectedIssue"], $code))
+		else if(isset($_GET["selectedIssue"]) && issueBelongsToProject($con, $_GET["selectedIssue"], $projectCode))
 		{
 			//$issue = getIssue($con,$_GET["selectedIssue"]);
 			echo "<p class='issueSelected'>Selected Issue:</p>";
 			
 			$issue = getIssue($con,$_GET["selectedIssue"]);
 			
-			displayIssue($issue,$code,4,50);
+			displayIssue($issue,$projectCode,4,50);
 			
 			
 			displayButton("exclusiveToggleWindow('confirm','infoWindow','block');","View Issue Info");
@@ -70,25 +71,25 @@ echo "<div id='rightCol'>";
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");
 			}
 				
-			displayConfirmationWindow("issueDelete","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueDelete","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to delete the selected issue?","targetPlace","Delete");
 			
-			displayConfirmationWindow("issueMove","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueMove","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to move the selected issue to 'To Do' ?","targetPlace","To_Do");
 			
-			displayConfirmationWindow("issuePostpone","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issuePostpone","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to move the selected issue to 'Backlog' ?","targetPlace","Backlog");
 			
-			displayConfirmationWindow("issueUpdate","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueUpdate","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to move the selected issue to 'In Progress' ?","targetPlace","In_Progress");
 			
-			displayConfirmationWindow("issueTesting","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueTesting","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to move the selected issue to 'Testing' ?","targetPlace","Testing");
 			
-			displayConfirmationWindow("issueAbandon","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueAbandon","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to abandon the selected issue ?","targetPlace","Abandoned");
 			
-			displayConfirmationWindow("issueComplete","scripts/updateIssue-script.php",$currentPage,$issue,$code,
+			displayConfirmationWindow("issueComplete","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
 			"Are you sure you want to mark the issue as Completed ?","targetPlace","Completed");
 					
 						
@@ -160,7 +161,7 @@ echo "<div id='rightCol'>";
 				echo "</div>";
 			echo "</div>";
 		}
-		if(isset($_GET["selectedIssue"]) && !issueBelongsToProject($con, $_GET["selectedIssue"], $code))
+		if(isset($_GET["selectedIssue"]) && !issueBelongsToProject($con, $_GET["selectedIssue"], $projectCode))
 		{
 			echo "<p class='noneSelected'>Issue with id=".$_GET["selectedIssue"]." not found.</p>";
 			

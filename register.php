@@ -10,18 +10,9 @@ include('header.php');
 				<input class="bigger-custom-input" type="text" name="user" placeholder="User-Name"><br>
 				<input class="bigger-custom-input" type="text" name="email" placeholder="Email adress"><br>
 				<input class="bigger-custom-input" type="password" name="pwd" placeholder="Password"><br>
-				<input class="bigger-custom-input" type="password" name="pwdrepeat" placeholder="Repeat Password" oninput="displayCaptcha()" onclick="displayCaptcha()" onchange="displayCaptcha()"><br>
+				<input class="bigger-custom-input" type="password" name="pwdrepeat" placeholder="Repeat Password" oninput="displayCaptcha()" onclick="displayCaptcha()" onchange="displayCaptcha()">
 				<br>
-
-				<label for="type"><span class="white_text">Choose the type of your account: </span> </label>
-				<br><br>
-				<select name="type" id="account_type">
-					<option value="">Select an option</option>
-					<option value="manager">Project Manager</option>
-					<option value="developer">Developer</option>
-				</select>
-				<br/>
-				<br/>
+				<br>
 				<div class="capbox">
 					<div id="CaptchaDiv"></div>
 					<div class="capbox-inner">

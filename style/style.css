@@ -342,15 +342,20 @@ margin-bottom: 1ex;
 	margin-left: 1ex;
 }
 
-#newProjectWindow{
-	display: none;
+.projectField{
 	margin-top:2ex;
 	position: absolute;
 	width: 34ex;
 	background-color: #0F0F0F;
 	border:solid;
 	border-color: #414a4c;
-	
+}
+
+#newProjectWindow{
+	display: none;
+}
+#joinProjectWindow{
+	display: none;
 }
 #editWindow
 {
