@@ -42,6 +42,16 @@ else if(isset($_POST["yes"]))
 	{
 		updateIssue($con, "In Progress", "In Progress", $user, $issueId);
 	}
+	else if($newPlace == "Assign_To")
+	{
+		$target = $_POST["targetDeveloper"];
+		updateIssue($con, "In Progress", "In Progress", $target, $issueId);
+	}
+	else if($newPlace == "Assign_In")
+	{
+		$target = $_POST["targetDeveloper"];
+		updateIssue($con, "Testing", "Testing", $target, $issueId);
+	}
 	else if($newPlace == "Testing")
 	{
 		updateIssue($con, $newPlace, $newPlace, $user, $issueId);
@@ -84,6 +94,7 @@ else if(isset($_POST["yes"]))
 		exit();
 	}
 	
+	//echo $target;
 	//echo($newPlace);
 	header("location: ../".$prevPage."?project=".$code."&selectedIssue=".$issueId);
 	exit();	

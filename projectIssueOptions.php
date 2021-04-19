@@ -23,8 +23,9 @@ echo "<div id='rightCol'>";
 			
 			displayButton("exclusiveToggleWindow('confirm','infoWindow','block');","View Issue Info");
 			
-			if(!issueInPlace($con,$_GET["selectedIssue"],"Completed") && $userRole == "manager" )
+			if( $userRole == "manager" )
 			{
+				displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 				displayButton("exclusiveToggleWindow('confirm','editWindow','block');","Edit Issue");
 			}
 			else if($userRole == "developer" &&
@@ -36,7 +37,6 @@ echo "<div id='rightCol'>";
 			
 			if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $userRole == "manager")
 			{
-				displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 				displayButton("exclusiveToggleWindow('confirm','issueMove','block');","Move Issue");
 			}
 			else if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $userRole == "developer" && isIssueCreatedBy($con,$_GET["selectedIssue"],$_SESSION["usersName"]) )
@@ -48,6 +48,7 @@ echo "<div id='rightCol'>";
 			if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issuePostpone','block');", "Postpone Issue");
+				displayButton("exclusiveToggleWindow('confirm','issueAssignTo','block');", "Assign Issue");
 			}			
 			else if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "developer")
 			{
@@ -61,6 +62,8 @@ echo "<div id='rightCol'>";
 			}
 			else if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "manager")
 			{
+				echo"<br>";
+				displayButton("exclusiveToggleWindow('confirm','issueAssignIn','block');", "Assign Issue");
 				displayButton("exclusiveToggleWindow('confirm','issueAbandon','block');", "Abandon");
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");
 			}
@@ -70,27 +73,38 @@ echo "<div id='rightCol'>";
 				displayButton("exclusiveToggleWindow('confirm','issueAbandon','block');", "Abandon");
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");
 			}
+			
+			if(issueInPlace($con,$_GET["selectedIssue"],"Completed") && $userRole == "manager")
+			{
+				displayButton("exclusiveToggleWindow('confirm','issuePostpone','block');", "Back to Backlog");
+			}
 				
 			displayConfirmationWindow("issueDelete","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to delete the selected issue?","targetPlace","Delete");
+			"Are you sure you want to delete the selected issue?","Delete",null,null);
 			
 			displayConfirmationWindow("issueMove","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to move the selected issue to 'To Do' ?","targetPlace","To_Do");
+			"Are you sure you want to move the selected issue to 'To Do' ?","To_Do",null,null);
 			
 			displayConfirmationWindow("issuePostpone","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to move the selected issue to 'Backlog' ?","targetPlace","Backlog");
+			"Are you sure you want to move the selected issue to 'Backlog' ?","Backlog",null,null);
 			
 			displayConfirmationWindow("issueUpdate","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to move the selected issue to 'In Progress' ?","targetPlace","In_Progress");
+			"Are you sure you want to move the selected issue to 'In Progress' ?","In_Progress",null,null);
 			
 			displayConfirmationWindow("issueTesting","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to move the selected issue to 'Testing' ?","targetPlace","Testing");
+			"Are you sure you want to move the selected issue to 'Testing' ?","Testing",null,null);
 			
 			displayConfirmationWindow("issueAbandon","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to abandon the selected issue ?","targetPlace","Abandoned");
+			"Are you sure you want to abandon the selected issue ?","Abandoned",null,null);
 			
 			displayConfirmationWindow("issueComplete","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
-			"Are you sure you want to mark the issue as Completed ?","targetPlace","Completed");
+			"Are you sure you want to mark the issue as Completed ?","Completed",null,null);
+			
+			displayAssignWindow("issueAssignTo","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
+			"Are you sure you want to assign the issue moving it to In Progress?","Assign_To",$con);
+			
+			displayAssignWindow("issueAssignIn","scripts/updateIssue-script.php",$currentPage,$issue,$code,$projectCode,
+			"Are you sure you want to assign the issue moving it to Testing?","Assign_In",$con);
 					
 						
 			echo "<div class='confirm' id='editWindow' style= 'display:none;'>";

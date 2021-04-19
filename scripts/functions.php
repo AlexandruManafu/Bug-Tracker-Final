@@ -290,6 +290,13 @@ function listIssue($con, $issueId)
 	return $result;
 }
 
+function listDevelopers($con, $developersProject)
+{
+	$sql = 'SELECT * FROM developers WHERE developersProject=?;';
+	$result = listEntries($con,$sql,$developersProject);
+	return $result;
+}
+
 
 function getProjectCode($con, $projectId)
 {
@@ -692,7 +699,7 @@ function displayIssue($issue,$projectId,$size,$maxTextLen)
 		</a>";		
 	}
 
-function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$nameHidden,$valueHidden)
+function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$targetPlace)
 {
 	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
 	echo "<form action = ".$formAction." method='post'>";
@@ -704,16 +711,48 @@ function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$
 		}
 		echo "<input type='hidden' name='projectId' value=".$projectId.">";
 		echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
-		if($nameHidden!=null)
-		{
-			echo "<input type='hidden' name=".$nameHidden." value=".$valueHidden.">";
-		}
+		
+		echo "<input type='hidden' name='targetPlace' value=".$targetPlace.">";
 		echo "<p>".$message."</p>";
 		echo "<button class='infoButton' type='text' name='yes'>Yes</button>";
 		echo "<button class='infoButton' type='text' name='no'>No</button>";
 		echo "</form>";
 					
 	echo "</div>";
+}
+
+function displayAssignWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$targetPlace,$con)
+{
+	$developers = listDevelopers($con,$projectCode);
+	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
+	echo "<form action = ".$formAction." method='post'>";
+	
+	echo "<p>Select a developer: </p><br>";
+	echo "<select name='targetDeveloper' id='account_type'>";
+			echo "<option value=''>Select an option</option>";
+			while($row = mysqli_fetch_array($developers))
+			{
+				$name = $row["developersName"];
+				echo "<option value=".$name.">".$name."</option>";
+			}
+	echo "</select><br><br>";
+	
+	echo "<input type='hidden' name='previousPage' value=".$previousPage.">";
+	if($issue!=NULL)
+	{
+		echo "<input type='hidden' name='issueId' value=".$issue["issueId"].">";
+	}
+	echo "<input type='hidden' name='projectId' value=".$projectId.">";
+	echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
+		
+	echo "<input type='hidden' name='targetPlace' value=".$targetPlace.">";
+	echo "<p>".$message."</p>";
+	echo "<button class='infoButton' type='text' name='yes'>Yes</button>";
+	echo "<button class='infoButton' type='text' name='no'>No</button>";
+	echo "</form>";
+					
+	echo "</div>";
+	
 }
 		
 function displayButton($functionsToCall,$displayText)
@@ -784,7 +823,7 @@ function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRol
 				</div>
 			";
 			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$projectId,$projectCode,
-			"Are you sure you want to delete the project with all its issues ?","targetPlace","Delete_Project");
+			"Are you sure you want to delete the project with all its issues ?","Delete_Project");
 			if(isset($error) && $error=="existActiveIssues" )
 			{	
 				echo "<p class = error>Projects with active issues cannot be deleted.</p>";
@@ -792,6 +831,16 @@ function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRol
 			
 			echo "</div>";
 
+}
+
+function listAllIssuesOfAProject($con, $projectId){
+    /*
+    "SELECT issueId,issuePriority,issueTitle FROM issues WHERE issuePlace=? AND issueProject=? AND issueDeadline = '0000-00-00' ORDER BY issuePriority DESC;";
+"SELECT issueId,issuePriority,issueTitle FROM issues WHERE issuePlace=? AND issueProject=? AND issueDeadline != '0000-00-00' ORDER BY issueDeadline ASC, issuePriority DESC;";
+    */
+    $sql = 'SELECT * FROM issues WHERE issueProject=?';
+    $result = listEntries($con, $sql, $projectId);
+    return $result;
 }
 
 
