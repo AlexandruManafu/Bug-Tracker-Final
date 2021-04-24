@@ -84,6 +84,8 @@
  .container td {
 	    font-weight: normal;
 	    font-size: 1em;
+		margin-right: 0ex;
+		padding-right: 0ex;
       -webkit-box-shadow: 0 2px 2px -2px #0E1119;
 		  -moz-box-shadow: 0 2px 2px -2px #0E1119;
 			 box-shadow: 0 2px 2px -2px #0E1119;
@@ -132,3 +134,5 @@
  .container td:nth-child(4),
  .container th:nth-child(4) { display: none; }
  }
+message.txt
+3 KB
