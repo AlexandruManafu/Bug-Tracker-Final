@@ -30,14 +30,16 @@
 				header("location: ./index.php");
 			}
 		?>
-	
-    	<table class="container">
-    	    <?php
-    	        echo createTableHead(array("Title", "Place", "Deadline", "Priority"));
-    	        echo createTableBody($con,$_GET["project"]); 
-    	        $urlPath = $_SERVER["REQUEST_URI"];
-    	        ?>
-    	</table>
+		<div class='minimumHeight'>
+			<table class="container">
+				<?php
+					echo createTableHead(array("Title", "Place", "Deadline"));
+					echo createTableBody($con,$_GET["project"]); 
+					$urlPath = $_SERVER["REQUEST_URI"];
+					?>
+			</table>
+		
+		</div>
     	<?php
 			if(isset($_GET["error"])){
 				createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
@@ -81,7 +83,8 @@
 			{
 				$issueDeadline = "None";
 			}
-            $html .= "<tr><td><a class='issueButton' href=".$_SESSION['currentPage']."?project=".$projectId."&selectedIssue=".$issueId.">".strval($issueTitle)."</a></td><td>". $issuePlace."</td><td>". $issueDeadline."</td><td>".$priorities[$issuePriority]."</td></tr>";
+			//<a class='issueButton' href=".$_SESSION['currentPage']."?project=".$projectId."&selectedIssue=".$issueId.">".strval($issueTitle)."</a>
+            $html .= "<tr><td>".displayIssue($row,$projectId,20,15)."</td><td>". $issuePlace."</td><td>". $issueDeadline."</td><td></tr>";
         }
         $html .= "</tbody>";
         return $html; 

@@ -42,7 +42,7 @@ include('header.php');
 			{
 				while($row = mysqli_fetch_array($issues))
 				{
-					displayIssue($row,$code,10,15);
+					echo displayIssue($row,$code,20,15);
 					
 				}
 			}

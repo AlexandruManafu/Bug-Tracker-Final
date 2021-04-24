@@ -18,7 +18,8 @@ echo "<div id='rightCol'>";
 			
 			$issue = getIssue($con,$_GET["selectedIssue"]);
 			
-			displayIssue($issue,$projectCode,4,50);
+			echo displayIssue($issue,$projectCode,30,50);
+			echo "<br>";
 			
 			
 			displayButton("exclusiveToggleWindow('confirm','infoWindow','block');","View Issue Info");

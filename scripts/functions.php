@@ -691,10 +691,10 @@ function displayIssue($issue,$projectId,$size,$maxTextLen)
 		$color = "grey";
 	}
 			
-	echo "<a class='issueButton' href=".$_SESSION["currentPage"]."?project=".$projectId."&selectedIssue=".$issue["issueId"].
+	return "<a class='issueButton' href=".$_SESSION["currentPage"]."?project=".$projectId."&selectedIssue=".$issue["issueId"].
 					
 		">
-		<img class='issuePriority' src='images/icons/circle-".$color.".png' alt='Issue Priority' width =".$size."%> 
+		<img class='issuePriority' src='images/icons/circle-".$color.".png' alt='Issue Priority' width =".$size."/> 
 		<p>".shortenDisplay($issue['issueTitle'],$maxTextLen)."</p>
 		</a>";		
 	}
