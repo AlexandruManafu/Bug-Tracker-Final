@@ -40,7 +40,10 @@
 					<li>
 						<?php
 							$url = $_SERVER['REQUEST_URI']; 
-							$projectNr = $_GET['project'];
+							if(isset($_GET['project']))
+							{
+								$projectNr = $_GET['project'];
+							}
 							if(strpos($url, 'todo.php') !== false)
 								echo '<a class="menu_button" href="kanban.php?project='.$projectNr.'">Kanban</a>';
 							else if (strpos($url, 'kanban.php') !== false)
