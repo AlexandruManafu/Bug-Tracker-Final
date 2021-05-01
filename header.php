@@ -54,7 +54,43 @@
 			?>
 		 <li>
 			<div id="loginForm">
+				<button class="login_close" type="button" onclick="toggleWindow('loginForm','block')" name="close_login">x</button>
+				<form action = "scripts/login-script.php" method="post">
 				
+				
+					<input class="custom-input" type="text" name="user" placeholder = "User-name"><br>
+					<input class="custom-input" type="password" name="password" placeholder = "Password"><br>
+					
+					<button class="login_button" type="text" name="submit">Sign-In</button>
+					<?php
+					if(isset($_GET['error']) && isset($_SESSION["usersId"])===false)
+						{
+							require_once 'scripts/functions.php';
+							if($_GET['error']!='loginSuccess')
+							{
+								callJavascript("toggleWindow('loginForm','block')");
+							}
+							if($_GET['error']=='emptyLoginField')
+							{
+								echo "<p class='error'>No fields can be empty.</p>";
+							}
+							else if($_GET['error']=='invalidUser')
+							{
+								echo "<p class='error'>Username does not exist</p>";
+							}
+							else if($_GET['error']=='invalidPassword')
+							{
+								echo "<p class='error'>Invalid password</p>";
+							}
+						}	
+					?>
+					
+					<p>Don't have an account?</p>
+					<a class="register_button" href="register.php">Sign-up</a><br>
+					
+				
+				</form>
+	
 			</div>
 		 </li>
 		 
