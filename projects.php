@@ -12,17 +12,21 @@ include('header.php');
 			header("location: ./index.php");
 	}
 
-			//echo "<p>yes</p>";
-	echo "<div class='projectWindow'>";
-			echo "<img class='projectIcon' onclick=toggleWindow('newProjectWindow','inline-block') src='images/icons/add.svg' alt='Create Project' width = 10%>";
-			echo "<p>New Project</p>";
+	?>
+	<div class='projectWindow'>
+			<img class='projectIcon' onclick=toggleWindow('newProjectWindow','inline-block') src='images/icons/add.svg' alt='Create Project' width = 10%>
+			<p>New Project</p>
+	</div>
 		
 		
-		echo "<div class='projectField' id='newProjectWindow'>";
-		echo "<form action = 'scripts/createProject-script.php' method='post'>";
-			echo "<input class='bigger-custom-input' type='text' name='projectTitle' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>";
-			echo "<button class='create_button' type='text' name='submit'>Create</button>";
-
+		
+		<div class='projectField' id='newProjectWindow'>
+		<form action = 'scripts/manageProject-script.php' method='post'>
+			<input class='bigger-custom-input' type='text' name='projectTitle' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>
+			<textarea class='newProjectDetails' name='projectDetails' rows='5'  placeholder = 'Details'></textarea><br>
+			<input type='hidden' name='targetPlace' value='Create_Project'>
+			<button class='create_button' type='text' name='submit'>Create</button>
+				<?php
 				if(isset($_GET["error"]) && $_GET["error"] == "projectCreated")
 				{
 					callJavascript("toggleWindow('newProjectWindow','inline-block')");
@@ -33,12 +37,14 @@ include('header.php');
 					callJavascript("toggleWindow('newProjectWindow','inline-block')");
 					echo "<p class='error' style='display: inline-block; margin-left:-24ex;'>Title is Empty</p>";
 				}
+				?>
 
-			echo "</form>";
-		echo "</div>";
+			</form>
+		</div>
+
 
 		
-
+	<?php
 	require_once 'scripts/database-handler.php';
 	require_once 'scripts/functions.php';
 	
@@ -49,11 +55,18 @@ include('header.php');
 			$projectId = $row["projectId"];
 			$projectName = $row["projectName"];
 			$projectCode = $row["projectCode"];
+			$projectDetails = $row["projectDetails"];
 			
 			echo "<div style='margin-top: 2ex;' class='projectWindow'>";
-				echo "<a href='kanban.php?project=".$projectId."'> <img class='projectIcon' src='images/icons/proj.svg' alt='Browse Project' width = 10%></a>";
+				echo isMobileDev() ? "<a href='todo.php?project=".$projectId."'>" : "<a href='kanban.php?project=".$projectId."'>";
+				echo "<img class='projectIcon' src='images/icons/proj.svg' alt='Browse Project' width = 10%></a>";
 				echo "<p>".shortenDisplay($projectName,10)."</p>";
 			echo "</div>";
+			
+			echo "<div class='projectDetailsBox' id='project".$projectId."'>";
+					echo "<p>".$projectDetails."</p>";
+			echo "</div>";
+			
 		}
 	}
 
@@ -62,15 +75,19 @@ include('header.php');
 	
 	displayProjects($projects);
 	
-	echo "<div class='projectWindow'>";
-			echo "<img class='projectIcon' onclick=toggleWindow('joinProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>";
-			echo "<p>Join Project</p>";
+	?>
+	<br>
+	<div class='projectWindow'>
+			<img class='projectIcon' onclick=toggleWindow('joinProjectWindow','inline-block') src='images/icons/add.svg' alt='Join Project' width = 10%>
+			<p>Join Project</p>
+	</div>
 			
-		echo "<div class='projectField' id='joinProjectWindow'>";
-		echo "<form action = 'scripts/joinProject-script.php' method='post'>";
-			echo "<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>";
-			echo "<button class='create_button' type='text' name='submit'>Join</button>";
-
+		<div class='projectField' id='joinProjectWindow'>
+		<form action = 'scripts/joinProject-script.php' method='post'>
+			<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>
+			<input type='hidden' name='targetPlace' value="Join_Project">
+			<button class='create_button' type='text' name='submit'>Join</button>
+				<?php
 				if(isset($_GET["error"]) && $_GET["error"] == "projectJoined")
 				{
 					callJavascript("toggleWindow('joinProjectWindow','inline-block')");
@@ -81,21 +98,17 @@ include('header.php');
 					callJavascript("toggleWindow('joinProjectWindow','inline-block')");
 					echo "<p class='error' style='display: inline-block; margin-left:-25ex;'>Invalid Code</p>";
 				}
-
-			echo "</form>";
-		echo "</div>";
+				?>
+			</form>
+		</div>
 		
+	<?php
 	$projects = listProjectsForDeveloper($con,$_SESSION["usersName"]);
 	
 	displayProjects($projects);
 		
-	
-		echo "</div>";
-	
-	
-
-	
 	?>
+	</div>
 	
 	
 	

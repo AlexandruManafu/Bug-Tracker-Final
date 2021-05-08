@@ -9,19 +9,20 @@
 	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	 <title>Your trusted Bug-Tracker</title>
 	 
+	 <link rel = "stylesheet" href="./style/reset.css">
 	 <link id="pagestyle" rel="stylesheet" type="text/css" href="./style/style.css">
 	 <link rel = "stylesheet" href = "./style/capbox.css"> 
+	 <link rel = "stylesheet" href="./style/todo.css">
 
 	 <script src="scripts/javascript.js"></script>
 	 <link rel="shortcut icon" type="image/png" href="img/icons/favicon.png">
-	 <link rel = "stylesheet" href="./style/todo.css">
 	</head>
 	<body onload="toggleWindow('newProjectWindow','inline-block');
 	toggleWindow('infoWindow','block');toggleWindow('newIssueWindow','inline-block');changeFlexValue('rightCol','newIssueWindow',3.5,2);">
 
 	
 	<div class="menu_logo">
-		 <img src="images/icons/logo.svg" alt="Website menu logo">
+		 <img class = 'img_logo' src="images/icons/logo.svg" alt="Website menu logo">
 	</div>
 	<nav class= "menu">	 
 		<ul>
@@ -37,7 +38,6 @@
 			{
 				echo "<li><a class='menu_button' href='projects.php'>Projects</a></li>";
 				?>
-					<li>
 						<?php
 							$url = $_SERVER['REQUEST_URI']; 
 							if(isset($_GET['project']))
@@ -45,13 +45,12 @@
 								$projectNr = $_GET['project'];
 							}
 							if(strpos($url, 'todo.php') !== false)
-								echo '<a class="menu_button" href="kanban.php?project='.$projectNr.'">Kanban</a>';
+								echo '<li><a class="menu_button" href="kanban.php?project='.$projectNr.'">Kanban</a></li>';
 							else if (strpos($url, 'kanban.php') !== false)
-								echo '<a class="menu_button" href="todo.php?project='.$projectNr.'">Todo</a>';
+								echo '<li><a class="menu_button" href="todo.php?project='.$projectNr.'">Todo</a></li>';
 		 				?>
-		 			</li>	
 				<?php
-				echo "<li style='visibility: hidden;' class='rightSpace'>.</li>";
+				// echo "<li style='visibility: hidden;' class='rightSpace'></li>";
 				echo "<li><a class='menu_button' style='margin-left: auto;' href='scripts/logout-script.php'>Log Out</a></li>";
 			}
 			?>
@@ -98,7 +97,5 @@
 		 </li>
 		 
 		</ul>
-		<ul>
 
-		</ul>
 	</nav>
