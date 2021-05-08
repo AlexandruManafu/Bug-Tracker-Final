@@ -10,7 +10,8 @@ if(isset($_POST["no"]) && isset($_POST["issueId"]))
 }
 else if(isset($_POST["no"]))
 {
-	$code = $_POST["projectCode"];
+	$code = $_POST["projectId"];
+	$prevPage = $_POST["previousPage"];
 	header("location: ../".$prevPage."?project=".$code);
 	exit();
 }
@@ -80,17 +81,6 @@ else if(isset($_POST["yes"]))
 	{	
 		deleteIssue($con,$issueId);
 		header("location: ../".$prevPage."?project=".$code);
-		exit();
-	}
-	else if($newPlace == "Delete_Project")
-	{
-		if(existsIssueInPlace($con, "To Do", $projectCode) || existsIssueInPlace($con, "In Progress", $projectCode) || existsIssueInPlace($con, "Testing", $projectCode))
-		{
-			header("location: ../".$prevPage."?project=".$code."&error=existActiveIssues");
-			exit();
-		}
-		deleteProject($con, $projectCode);
-		header("location: ../projects.php");
 		exit();
 	}
 	

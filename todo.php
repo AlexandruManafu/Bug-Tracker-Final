@@ -71,9 +71,20 @@
 		$priorities[2]="Medium";
 		$priorities[3]="High";
 		
-        $issues = listAllIssuesOfAProject($con, $projectCode); 
         $html = "<tbody>"; 
-        while($row = mysqli_fetch_array($issues)){
+		$issues = listIssuesDeadline($con, $projectCode); 
+		$html .= createTablePart($issues,$projectId);
+		$issues = listIssuesNoDeadline($con, $projectCode); 
+		$html .= createTablePart($issues,$projectId);
+		
+        $html .= "</tbody>";
+        return $html; 
+    }
+	
+	function createTablePart($issues,$projectId)
+	{
+		$result = "";
+		 while($row = mysqli_fetch_array($issues)){
 			$issueId = $row["issueId"];
 			$issueTitle = $row["issueTitle"];
 			$issuePlace = $row["issuePlace"];
@@ -84,10 +95,14 @@
 				$issueDeadline = "None";
 			}
 			//<a class='issueButton' href=".$_SESSION['currentPage']."?project=".$projectId."&selectedIssue=".$issueId.">".strval($issueTitle)."</a>
-            $html .= "<tr><td>".displayIssue($row,$projectId,20,15)."</td><td>". $issuePlace."</td><td>". $issueDeadline."</td><td></tr>";
+			if(isMobileDev())
+				$dots = 8;
+			else
+				$dots = 15;
+            $result .= "<tr><td>".displayIssue($row,$projectId,20,$dots)."</td><td>". $issuePlace."</td><td>". dateDisplay($issueDeadline)."</td><td></tr>";
         }
-        $html .= "</tbody>";
-        return $html; 
-    }
+		
+		return $result;
+	}
 
 ?>

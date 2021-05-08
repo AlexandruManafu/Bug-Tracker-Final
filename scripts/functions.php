@@ -36,10 +36,7 @@ function invalidUsername($user)
 }
 
 function usernameExists($con,$user)
-{
-	//check if username already exists in database
-	//Allow duplicate emails for multiple account because the account types are final
-	
+{	
 	$sql = "SELECT * FROM users WHERE usersName = ?;";
 	$stmt = mysqli_stmt_init($con);
 	if(!mysqli_stmt_prepare($stmt,$sql))
@@ -48,24 +45,15 @@ function usernameExists($con,$user)
 	}
 		
 	mysqli_stmt_bind_param($stmt, "s", $user); 
-	//ss stands for 2 strings this replaces ? placeholder with the actual username in the sql statement
 	mysqli_stmt_execute($stmt);
 	
-/*
-	$sqll = "SELECT * FROM users WHERE usersName = '$user';";
-	$result=mysqli_query($con,$sqll);
-	
-	$rows = mysqli_num_rows($result);
-*/	
 	$result = mysqli_stmt_get_result($stmt);
 	$row = mysqli_fetch_assoc($result);
-	//echo($row['usersName']);
 		
 	mysqli_stmt_close($stmt);
-	if($row)//not working
+	if($row)
 	{
-		if($row['usersName']===$user)
-			return $row;
+		return $row;
 	}
 	else
 	{
@@ -164,9 +152,9 @@ function callJavascript($functionName)
 		  '</script>';
 }
 
-function insertInProjects($con,$projectName,$user)
+function insertInProjects($con,$projectName,$projectDetails,$user)
 {
-	$sql = "INSERT INTO projects(projectCode, projectName, projectOwner) VALUES(?, ?, ?);";
+	$sql = "INSERT INTO projects(projectCode, projectName, projectDetails, projectOwner) VALUES(?, ?, ?, ?);";
 	$stmt = mysqli_stmt_init($con);
 	if(!mysqli_stmt_prepare($stmt,$sql))
 	{
@@ -176,13 +164,10 @@ function insertInProjects($con,$projectName,$user)
 	
 	$code = uniqid();
 	
-	mysqli_stmt_bind_param($stmt, "sss", $code,$projectName,$user); 
+	mysqli_stmt_bind_param($stmt, "ssss", $code,$projectName,$projectDetails,$user); 
 	mysqli_stmt_execute($stmt);
 		
 	mysqli_stmt_close($stmt);
-	
-	$con->close();	
-	header("location: ../projects.php?error=projectCreated");
 }
 
 function isDbEmpty($con,$dbName)
@@ -214,6 +199,7 @@ function createDefualtTables($con)
 		projectId int(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 		projectCode VARCHAR(128) NOT NULL,
 		projectName VARCHAR(128) NOT NULL,
+		projectDetails TEXT NOT NULL,
 		projectOwner VARCHAR(128) NOT NULL
 	);";
 	$sql .= "CREATE TABLE developers
@@ -234,6 +220,12 @@ function createDefualtTables($con)
 		issueCreatedBy VARCHAR(128) NOT NULL,
 		issueDevelopedBy VARCHAR(128) NOT NULL,
 		issueProject VARCHAR(128) NOT NULL
+	);";
+	$sql .= "CREATE TABLE notifications
+	(
+		notificationId int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		notificationTarget VARCHAR(128) NOT NULL,
+		notificationContent TEXT NOT NULL
 	);";
 	
 	if ($con->multi_query($sql) === TRUE)
@@ -271,14 +263,22 @@ function listEntries($con, $sql, $placeholderValue)
 
 function listProjectsForManager($con, $user)
 {
-	$sql = 'SELECT projectCode,projectName, projectId FROM projects WHERE projectOwner=?;';
+	$sql = 'SELECT projectId,projectCode,projectName,projectDetails FROM projects WHERE projectOwner=?;';
 	$result = listEntries($con,$sql,$user);
+	return $result;
+}
+
+function listProjectById($con, $projectId)
+{
+	$sql = 'SELECT projectCode,projectName,projectDetails FROM projects WHERE projectId=?;';
+	$result = listEntries($con,$sql,$projectId);
+	$result = mysqli_fetch_array($result);
 	return $result;
 }
 
 function listProjectsForDeveloper($con, $user)
 {
-	$sql = 'SELECT developersProject projectCode,projectName, projectId FROM developers,projects WHERE developers.developersProject=projectCode AND developersName= ? ;';
+	$sql = 'SELECT developersProject projectCode,projectName,projectDetails, projectId FROM developers,projects WHERE developers.developersProject=projectCode AND developersName= ? ;';
 	$result = listEntries($con,$sql,$user);
 	return $result;
 }
@@ -527,6 +527,15 @@ function updateEntry($con, $sql, $value, $id)
 	mysqli_stmt_close($stmt);
 }
 
+function isMobileDev(){
+    if(isset($_SERVER['HTTP_USER_AGENT']) and !empty($_SERVER['HTTP_USER_AGENT'])){
+       $user_ag = $_SERVER['HTTP_USER_AGENT'];
+       if(preg_match('/(Mobile|Android|Tablet|GoBrowser|[0-9]x[0-9]*|uZardWeb\/|Mini|Doris\/|Skyfire\/|iPhone|Fennec\/|Maemo|Iris\/|CLDC\-|Mobi\/)/uis',$user_ag)){
+          return true;
+       };
+    };
+    return false;
+}
 function moveFromBacklog($con,$issueId)
 {
 	$sql = "UPDATE issues
@@ -667,6 +676,73 @@ function editIssue($con,$newTitle,$newPriority,$newDetails,$issueId,$issueDeadli
 		addDeadline($con, $issueDeadline, $issueId);
 }
 
+function listIssuesNoDeadline($con, $projectId){
+    $sql = "SELECT * FROM issues WHERE issueProject=? AND issueDeadline = '0000-00-00'
+			ORDER BY
+			(case issuePlace 
+			when 'Backlog' then 0
+			when 'To Do' then 1
+			when 'In Progress' then 2
+			when 'Testing' then 3
+			when 'Completed' then 4
+			end), 
+			issuePriority DESC;";
+			
+    $result = listEntries($con, $sql, $projectId);
+    return $result;
+}
+
+function listIssuesDeadline($con, $projectId){
+    $sql = "SELECT * FROM issues WHERE issueProject=? AND issueDeadline != '0000-00-00'
+			ORDER BY
+			(case issuePlace 
+			when 'Backlog' then 0
+			when 'To Do' then 1
+			when 'In Progress' then 2
+			when 'Testing' then 3
+			when 'Completed' then 4
+			end), 
+			issueDeadline ASC, issuePriority DESC;";
+			
+    $result = listEntries($con, $sql, $projectId);
+    return $result;
+}
+
+function editProject($con,$newTitle,$newDetails,$projectId)
+{
+	$sql = "UPDATE projects
+			SET projectName = ?, projectDetails = ?
+			WHERE projectId = ?;";
+			
+	$stmt = mysqli_stmt_init($con);
+	
+	if(!mysqli_stmt_prepare($stmt,$sql))
+	{
+		header("location: ./projects.php?error=stmtFailed");
+	}
+	mysqli_stmt_bind_param($stmt, "sss", $newTitle,$newDetails,$projectId); 
+	mysqli_stmt_execute($stmt);
+		
+	mysqli_stmt_close($stmt);
+}
+
+function removeFromProject($con, $projectCode, $userName)
+{
+	$sql = "DELETE FROM developers WHERE developersProject = ? AND developersName = ?;";
+	$stmt = mysqli_stmt_init($con);
+	if(!mysqli_stmt_prepare($stmt,$sql))
+	{
+		header("location: ./projects.php?error=stmtFailed");
+	}
+		
+	mysqli_stmt_bind_param($stmt, "ss", $projectCode, $userName); 
+	
+	mysqli_stmt_execute($stmt);
+		
+	mysqli_stmt_close($stmt);
+}
+
+
 
 //##########################################################################################
 // Functions that display things go below
@@ -767,6 +843,8 @@ function displaySpecialButton($class,$functionsToCall,$displayText)
 		
 function dateDisplay($issueDate)
 {
+	if($issueDate=="None")
+		return $issueDate;
 	$dateArr = explode("-",$issueDate);
 	return $dateArr[2]."-".$dateArr[1]."-".$dateArr[0];
 }
@@ -803,6 +881,12 @@ function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRol
 				
 				echo "</form>";
 			echo "</div>";
+			if($userRole == "manager")
+			{
+				echo "<br><br>";
+				echo "<a class='menu_button' id='manageProjectB' href='manage.php?project=".$projectId."'>Manage Project</a>";
+				
+			}
 			if(isset($error) && $error=="emptyInput" )
 			{	
 				echo "<p class=error style='margin-top:3ex;' = error>No inputs can be empty</p>";
@@ -810,12 +894,6 @@ function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRol
 			if(isset($error) && $error=="invalidDate" )
 			{	
 				echo "<p class=error style='margin-top:3ex;' = error>Date entered is invalid</p>";
-			}
-			
-			if($userRole == "manager")
-			{
-				displaySpecialButton("deleteProject","exclusiveToggleWindow('confirm','deleteProjectWindow','block');","Delete Project");
-				displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Project Join Code");
 			}
 			echo "<div class=confirm id=displayCode style='display:none;'>
 					<p>The join code for the current project is:</p><br>
@@ -831,16 +909,6 @@ function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRol
 			
 			echo "</div>";
 
-}
-
-function listAllIssuesOfAProject($con, $projectId){
-    /*
-    "SELECT issueId,issuePriority,issueTitle FROM issues WHERE issuePlace=? AND issueProject=? AND issueDeadline = '0000-00-00' ORDER BY issuePriority DESC;";
-"SELECT issueId,issuePriority,issueTitle FROM issues WHERE issuePlace=? AND issueProject=? AND issueDeadline != '0000-00-00' ORDER BY issueDeadline ASC, issuePriority DESC;";
-    */
-    $sql = 'SELECT * FROM issues WHERE issueProject=?';
-    $result = listEntries($con, $sql, $projectId);
-    return $result;
 }
 
 
