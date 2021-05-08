@@ -256,9 +256,9 @@ margin-bottom: 1ex;
   color:white;
   background-color: black;
   
-  width: 26ex;
+  width: 20ex;
   height: 4ex;
-  font-size = 4ex;
+  font-size: 2.5ex;
   margin-bottom: 1ex;
 }
 
@@ -352,6 +352,8 @@ margin-bottom: 1ex;
 }
 
 #newProjectWindow{
+	width: auto;
+	padding-right: 1ex;
 	display: none;
 }
 #joinProjectWindow{
@@ -370,6 +372,19 @@ margin-bottom: 1ex;
 	border:none;
 	font-size: 2ex;
 	margin-left: 23.8ex;
+	padding:0.3ex;
+	margin-bottom:1ex;
+	margin-top:1ex;
+}
+
+.add_button{
+	display: inline-block;
+	border:none;
+	color: white;
+	background-color: #035096;
+	border:none;
+	font-size: 2ex;
+	margin-left: 20ex;
 	padding:0.3ex;
 	margin-bottom:1ex;
 	margin-top:1ex;
@@ -429,6 +444,14 @@ margin-bottom: 1ex;
 {
 	background-color: black;
 	color: white;
+}
+
+.newProjectDetails
+{
+	background-color: black;
+	color: white;
+	margin-top: 2ex;
+	margin-left: 1ex;
 }
 
 .issueButton
@@ -552,6 +575,107 @@ display: block;
 	border:solid;
 	border-color: black;
 }
+
+#manageProjectB
+{
+	font-size: 3ex;
+}
+
+.projectDetailsBox
+{
+	display: none;
+	margin-left: 17ex;
+}
+
+@media (max-width: 700px) {
+	.projectIcon{
+		width: 100px;
+	}
+
+	html, body {
+		position:relative;
+		overflow-x:hidden;  
+	}
+
+	.wrapper{
+		margin-top: 10%;
+		width:80%;
+		display: block;
+	}
+
+	.projectWindow{
+		width: 100%;
+		align-items: center;
+		align-content: center;
+		text-align: center;
+	}
+
+
+	.img_logo{
+		display: none;
+	}
+
+	.column {
+		border: solid;
+		border-color: white;
+		width: 100%;
+		height: 30%;
+	  }
+
+	  .columnTitle
+	  {
+		  text-align:center;
+	  }
+
+	  .row {
+		display: block;
+	  }
+
+	/* .menu {
+		width: 100%;
+		height: 50px;
+		display: block;
+	}
+
+	.menu_button {
+		margin-top: 50px;
+		width: 50px;
+		height: 50px;
+	} */
+
+	.confirm {
+		width: 80%;
+		position: relative;
+		display:inline-flex;
+	}
+
+	.bigger-custom-inputIssues{
+		width: 80%;
+		height: 10%;
+	}
+
+	#account_type {
+		width: 60%;
+		height: 30%;
+	}
+
+	#loginForm {
+		margin-left:-70%;
+		position: absolute;
+		border-radius: 2ex 0px 25px 25px;
+	}
+	.menu_logo {
+		display: none;
+	}
+
+	.menu {
+		margin-top: 10ex;
+		margin-left: auto;
+		text-align: center;
+		display: block;
+	}
+}
+
 
 
 
