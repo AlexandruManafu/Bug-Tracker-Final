@@ -43,6 +43,14 @@ else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 		if(projectExists($con,$projectCode) && !isDevInProject($con,$projectCode,$user) && !isOwnerProject($con,$projectCode,$user) )
 		{
 			addDevToProject($con,$projectCode,$user);
+			
+			$name = getProjectName($con,$projectCode);
+			$content = $user ." has joined the project ". $name;
+			
+			$user = getProjectOwner($con,$projectCode);
+			
+			addNotification($con,$user,$content);
+			
 			header("location: ../projects.php?error=projectJoined");
 		}
 		else
@@ -86,7 +94,7 @@ else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 			header("location: ../".$prevPage."?project=".$code."&error=noSuchUser");
 			exit();
 		}
-		else if(isDevInProject($con,$projectCode,$user) || $user == $_SESSION["usersName"])
+		else if(isDevInProject($con,$projectCode,$user) ) //|| $user == $_SESSION["usersName"]
 		{
 			header("location: ../".$prevPage."?project=".$code."&error=alreadyJoined");
 			exit();
@@ -94,6 +102,15 @@ else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 		else
 		{
 			addDevToProject($con,$projectCode,$user);
+			
+			if($user != $_SESSION["usersName"])
+			{
+				$name = getProjectName($con,$projectCode);
+				
+				$content = $_SESSION["usersName"] ." added you to the project ". $name;
+				
+				addNotification($con,$user,$content);
+			}
 			header("location: ../".$prevPage."?project=".$code."&error=devAdded");
 		}
 		exit();
@@ -107,6 +124,15 @@ else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 			exit();
 		}
 		removeFromProject($con, $projectCode, $target);
+		
+		if($target != $_SESSION["usersName"])
+		{
+			$name = getProjectName($con,$projectCode);
+				
+			$content = $_SESSION["usersName"] ." removed you from the project ". $name;
+				
+			addNotification($con,$target,$content);
+		}
 		
 		header("location: ../".$prevPage."?project=".$code."&error=devRemoved");
 		exit();

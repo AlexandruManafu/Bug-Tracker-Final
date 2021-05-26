@@ -13,6 +13,7 @@
 	 <link id="pagestyle" rel="stylesheet" type="text/css" href="./style/style.css">
 	 <link rel = "stylesheet" href = "./style/capbox.css"> 
 	 <link rel = "stylesheet" href="./style/todo.css">
+	 <link rel = "stylesheet" href="./style/notifications.css">
 
 	 <script src="scripts/javascript.js"></script>
 	 <link rel="shortcut icon" type="image/png" href="img/icons/favicon.png">
@@ -48,9 +49,10 @@
 								echo '<li><a class="menu_button" href="kanban.php?project='.$projectNr.'">Kanban</a></li>';
 							else if (strpos($url, 'kanban.php') !== false)
 								echo '<li><a class="menu_button" href="todo.php?project='.$projectNr.'">Todo</a></li>';
+							else
+								echo '<a id="notificationBell" href="notifications.php"><img src="images/icons/bell.svg" alt="Notifications bell"></a>';
 		 				?>
 				<?php
-				// echo "<li style='visibility: hidden;' class='rightSpace'></li>";
 				echo "<li><a class='menu_button' style='margin-left: auto;' href='scripts/logout-script.php'>Log Out</a></li>";
 			}
 			?>

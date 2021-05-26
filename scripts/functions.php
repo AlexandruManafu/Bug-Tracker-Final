@@ -125,12 +125,6 @@ function loginUser($con,$user,$password)
 	if($passwordCheck === false)
 	{
 		header("location: ..?error=invalidPassword");
-		/*
-		echo $hashedPassword;
-		echo '\n';
-		echo password_hash($password,PASSWORD_DEFAULT);
-		*/
-		
 	}
 	else if($passwordCheck === true)
 	{
@@ -138,10 +132,7 @@ function loginUser($con,$user,$password)
 		session_start();
 		$_SESSION["usersId"] = $userExists["usersId"];
 		$_SESSION["usersName"] = $userExists["usersName"];
-		$_SESSION["currentPage"] = "kanban.php";
-		
-		header("location: ..?error=loginSuccess");
-		
+		$_SESSION["currentPage"] = "kanban.php";	
 	}
 }
 
@@ -312,6 +303,28 @@ function getProjectId($con, $projectCode)
 	$row = mysqli_fetch_array($result);
 	return $row["projectId"];
 }
+function getProjectName($con, $projectCode)
+{
+	$sql = 'SELECT projectName FROM projects WHERE projectCode=?;';
+	$result = listEntries($con,$sql,$projectCode);
+	$row = mysqli_fetch_array($result);
+	return $row["projectName"];
+}
+function getProjectOwner($con, $projectCode)
+{
+	$sql = 'SELECT projectOwner FROM projects WHERE projectCode=?;';
+	$result = listEntries($con,$sql,$projectCode);
+	$row = mysqli_fetch_array($result);
+	return $row["projectOwner"];
+}
+
+function getNotifications($con, $userName)
+{
+	$sql = "SELECT notificationId, notificationContent FROM notifications WHERE notificationTarget = ?";
+	$result = listEntries($con, $sql, $userName);
+    return $result;
+}
+
 
 function entryExists($con,$sql,$placeholder1,$placeholder2)
 {
@@ -419,24 +432,35 @@ function projectExists($con,$code)
 	}
 }
 
-function addDevToProject($con,$code,$user)
+function insertInTable($con,$sql,$value,$value2)
 {
-	$sql = "INSERT INTO developers(developersName, developersProject) VALUES(?, ?);";
-	
 	$stmt = mysqli_stmt_init($con);
 	if(!mysqli_stmt_prepare($stmt,$sql))
 	{
 		header("location: ./projects.php?error=stmtFailed");
 	}
-	
 		
-	mysqli_stmt_bind_param($stmt, "ss", $user, $code); 
+	mysqli_stmt_bind_param($stmt, "ss", $value, $value2); 
 	
 	mysqli_stmt_execute($stmt);
 	
 	$result = mysqli_stmt_get_result($stmt);
 	
 	mysqli_stmt_close($stmt);
+}
+
+function addDevToProject($con,$code,$user)
+{
+	$sql = "INSERT INTO developers(developersName, developersProject) VALUES(?, ?);";
+	
+	insertInTable($con,$sql,$user,$code);
+}
+
+function addNotification($con,$target,$content)
+{
+	$sql = "INSERT INTO notifications(notificationTarget, notificationContent) VALUES(?, ?);";
+	
+	insertInTable($con,$sql,$target,$content);
 }
 
 function shortenDisplay($string,$maxSize)
@@ -553,6 +577,24 @@ function postponeFromToDo($con,$issueId)
 	updateEntry($con,$sql,"Backlog",$issueId);
 }
 
+function addDeadline($con, $issueDeadline, $issueId)
+{
+	$sql = "UPDATE issues
+			SET issueDeadline = ?
+			WHERE issueId = ?;";
+			
+	updateEntry($con, $sql, $issueDeadline, $issueId);
+}
+
+function addCompletionTime($con, $issueCompletedAt, $issueId)
+{
+	$sql = "UPDATE issues
+			SET issueCompletedAt = ?
+			WHERE issueId = ?;";
+			
+	updateEntry($con, $sql, $issueCompletedAt, $issueId);
+}
+
 
 function updateIssueExecute($con,$sql, $newPlace, $newStatus, $developer, $issueId)
 {
@@ -634,24 +676,11 @@ function deleteProject($con,$projectCode)
 	deleteEntry($con,$sql,$projectCode);
 }
 
-function addDeadline($con, $issueDeadline, $issueId)
+function deleteNotifications($con,$targetUser)
 {
-	$sql = "UPDATE issues
-			SET issueDeadline = ?
-			WHERE issueId = ?;";
-			
-	updateEntry($con, $sql, $issueDeadline, $issueId);
+	$sql = "DELETE FROM notifications WHERE notificationTarget = ?;";
+	deleteEntry($con,$sql,$targetUser);
 }
-
-function addCompletionTime($con, $issueCompletedAt, $issueId)
-{
-	$sql = "UPDATE issues
-			SET issueCompletedAt = ?
-			WHERE issueId = ?;";
-			
-	updateEntry($con, $sql, $issueCompletedAt, $issueId);
-}
-
 
 function editIssue($con,$newTitle,$newPriority,$newDetails,$issueId,$issueDeadline)
 {
@@ -741,6 +770,7 @@ function removeFromProject($con, $projectCode, $userName)
 		
 	mysqli_stmt_close($stmt);
 }
+
 
 
 

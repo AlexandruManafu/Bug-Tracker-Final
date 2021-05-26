@@ -22,6 +22,13 @@ if(isset($_POST["submit"]))
 	}
 	
 	loginUser($con,$user,$password);
+	
+	$data = getNotifications($con,$_SESSION["usersName"]);
+	
+	if($data->num_rows==0)
+		header("location: ..?error=loginSuccess");
+	else
+		header("location: ../notifications.php");
 }
 else //redirect user back if he tries to access this page by inputing it on the bar
 {

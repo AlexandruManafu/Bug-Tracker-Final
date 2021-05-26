@@ -46,34 +46,26 @@ else if(isset($_POST["yes"]))
 	else if($newPlace == "Assign_To")
 	{
 		$target = $_POST["targetDeveloper"];
-		updateIssue($con, "In Progress", "In Progress", $target, $issueId);
+		if(!empty($target))
+			updateIssue($con, "In Progress", "In Progress", $target, $issueId);
 	}
 	else if($newPlace == "Assign_In")
 	{
 		$target = $_POST["targetDeveloper"];
-		updateIssue($con, "Testing", "Testing", $target, $issueId);
+		if(!empty($target))
+			updateIssue($con, "Testing", "Testing", $target, $issueId);
 	}
 	else if($newPlace == "Testing")
 	{
 		updateIssue($con, $newPlace, $newPlace, $user, $issueId);
 	}
-	else if($newPlace == "Abandoned")
+	else if($newPlace == "Completed" || $newPlace == "Abandoned")
 	{
 		$currentDate = date('Y-m-d');
 		
 		$issue = getIssue($con,$issueId);
 		$lastDev = $issue["issueDevelopedBy"];
-		abandonIssue($con, "Completed", "Abandoned", $lastDev, $issueId);
-		
-		addCompletionTime($con, $currentDate, $issueId);
-	}
-	else if($newPlace == "Completed")
-	{
-		$currentDate = date('Y-m-d');
-		
-		$issue = getIssue($con,$issueId);
-		$lastDev = $issue["issueDevelopedBy"];
-		updateIssue($con, "Completed", "Completed", $lastDev, $issueId);
+		updateIssue($con, "Completed", $newPlace, $lastDev, $issueId);
 		
 		addCompletionTime($con, $currentDate, $issueId);
 	}
@@ -82,6 +74,24 @@ else if(isset($_POST["yes"]))
 		deleteIssue($con,$issueId);
 		header("location: ../".$prevPage."?project=".$code);
 		exit();
+	}
+	
+	if($newPlace == "Assign_To" || $newPlace == "Assign_In" )
+	{
+		if(empty($target))
+		{
+			header("location: ../".$prevPage."?project=".$code."&error=emptyInput");
+			exit();
+		}
+		if($target != $_SESSION["usersName"])
+		{
+			$name = getProjectName($con,$projectCode);
+			$issue = getIssue($con, $issueId);
+				
+			$content = $_SESSION["usersName"] ." assigned you the issue ".$issue["issueTitle"]." from the project ". $name;
+				
+			addNotification($con,$target,$content);
+		}
 	}
 	
 	//echo $target;

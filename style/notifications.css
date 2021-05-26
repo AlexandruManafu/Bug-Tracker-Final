@@ -1,0 +1,50 @@
+
+#listBox {
+	padding-top: 5ex;
+    position: relative; 
+    width: 50%;
+    top: 10%;
+    color: white;
+    text-align: center;
+    margin: auto;
+}
+
+.notificationElement{
+	display:inline-block;
+	margin-bottom: 3ex;
+	width: auto;
+    font-size: 20px;
+	
+	padding-top: 0.5ex;
+	padding-bottom: 0.5ex;
+	padding-left: 1ex;
+	padding-right: 1ex;
+	background-color: rgb(68, 83, 136);
+}
+
+
+.seenNotification {
+   float: right;
+}
+
+#centerText
+{
+	margin-top: 5ex;
+	allign-content: center;
+	text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+
+    #listBox {
+        width: 80%;
+    }
+
+    #listHeader {
+        font-size: 35px;
+    }
+
+    #listBody .notificationList{
+        font-size: 25px;
+    } 
+ }

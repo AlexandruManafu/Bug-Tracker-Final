@@ -83,8 +83,8 @@ include('header.php');
 	</div>
 			
 		<div class='projectField' id='joinProjectWindow'>
-		<form action = 'scripts/joinProject-script.php' method='post'>
-			<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:0.5ex;' placeholder = 'Project Title'><br>
+		<form action = 'scripts/manageProject-script.php' method='post'>
+			<input class='bigger-custom-input' type='text' name='projectCode' style='margin-left:0.5ex;' placeholder = 'Project Code'><br>
 			<input type='hidden' name='targetPlace' value="Join_Project">
 			<button class='create_button' type='text' name='submit'>Join</button>
 				<?php

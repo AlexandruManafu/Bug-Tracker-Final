@@ -23,7 +23,7 @@ include('header.php');
 				
 		displayButton("exclusiveToggleWindow('confirm','editProject','block');","Edit Project Fields");
 			
-		displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Project Join Code");
+		displayButton("exclusiveToggleWindow('confirm','displayCode','block');","Display Join Code");
 	
 		?>
 		<div class='confirm' id='editProject' style= 'display:none;margin-left:3ex;'>

@@ -45,25 +45,25 @@ echo "<div id='rightCol'>";
 				displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 			}
 			
-			
+			if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && isDevInProject($con,$projectCode,$_SESSION["usersName"]) )
+			{
+				displayButton("exclusiveToggleWindow('confirm','issueUpdate','block');", "Update Status");
+				echo "<br>";
+			}
 			if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "manager")
 			{
 				displayButton("exclusiveToggleWindow('confirm','issuePostpone','block');", "Postpone Issue");
 				displayButton("exclusiveToggleWindow('confirm','issueAssignTo','block');", "Assign Issue");
 			}			
-			else if(issueInPlace($con,$_GET["selectedIssue"],"To Do") && $userRole == "developer")
-			{
-				displayButton("exclusiveToggleWindow('confirm','issueUpdate','block');", "Update Status");
-			}
 			
 			
-			if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "developer")
+			if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && isDevInProject($con,$projectCode,$_SESSION["usersName"]) )
 			{
 				displayButton("exclusiveToggleWindow('confirm','issueTesting','block');", "Update Status");
+				echo "<br>";
 			}
-			else if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "manager")
+			if(issueInPlace($con,$_GET["selectedIssue"],"In Progress") && $userRole == "manager")
 			{
-				echo"<br>";
 				displayButton("exclusiveToggleWindow('confirm','issueAssignIn','block');", "Assign Issue");
 				displayButton("exclusiveToggleWindow('confirm','issueAbandon','block');", "Abandon");
 				displayButton("exclusiveToggleWindow('confirm','issueComplete','block');", "Mark as Completed");

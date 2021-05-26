@@ -587,6 +587,15 @@ display: block;
 	margin-left: 17ex;
 }
 
+#notificationBell img
+{
+	margin-top: -8ex;
+	vertical-align: bottom;
+	width: 30px;
+	margin-left: 1ex;
+	margin-right: 1ex;
+}
+
 @media (max-width: 700px) {
 	.projectIcon{
 		width: 100px;
