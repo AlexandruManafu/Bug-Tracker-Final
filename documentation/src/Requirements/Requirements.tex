@@ -1,0 +1,219 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\everymath{\displaystyle}
+\title{Project Requirements\\ \Large Bug Tracker}
+\author{\vspace{6ex}}
+
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\usepackage{tikz}
+
+\begin{document}
+\maketitle
+
+\newcommand{\p}{
+\paragraph{} 
+}
+\newcommand{\ind}{
+\indent
+}
+\newcommand{\q}{\item}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\field}[1]{\begin{tabular}{c}
+#1
+\end{tabular}}
+
+\newcommand{\use}[9]{
+\begin{tabular}{|c|c|}
+\hline
+Name of use case: & \tb{#1}\\
+\hline
+\field{Created by:\\ Alexandru Manafu} & \field{Date Created:\\ #2}\\
+\hline
+\end{tabular}
+
+\noindent \begin{tabular}{|c|p{0.8\textwidth}|}
+\hline
+Description: &\vspace{0.1ex} #3.\\
+\hline
+Actors: &\vspace{0.1ex} #4\\
+\hline
+Preconditions: &\vspace{-3ex} #5\\
+\hline
+Postconditions: & \vspace{-3ex} #6\\
+\hline
+Flow: & \vspace{-3ex} #7\\
+\hline
+Altervative Flows: & \vspace{-3ex} #8\\
+\hline
+Requirements: & \vspace{-3ex} #9\\
+\hline
+\end{tabular}
+}
+
+\newcommand{\newp}{\newpage\noindent\hspace{-0.8ex}}
+
+\addtocontents{toc}{\setcounter{tocdepth}{3}}
+\tableofcontents
+
+\section{Introduction}
+%This document describes the interaction of actors with a system will be utilized to achieve a specific goal. 
+\p This document describes the interaction of actors with a bug tracker application in order to reach some specific goal and because the project relies on an MVP(minimum viable product) version of itself only new activities will be discussed.
+\p To summarize the MVP version, it has two types of users that are assigned at sign-up and are final.
+\p Once a user is logged in, projects may be created and by selecting a project, issues can be created and manipulated by the users, issues also have a place (Backlog, Testing, and so on) and descriptive information.\p Each type of user has certain permissions that dictate what issues can be moved or edited.
+
+\newpage
+
+\section{Requirements}
+
+\use{Assign Issue}
+{11/04/21}
+{The project manager assigns an issue to a developer from the same project, while also moving that issue.}
+{Project Manager, Developer}
+{\begin{itemize}
+	\q The user is logged in
+	%\q A project is chosen and a issue from Todo or In Progress is selected
+	\q The user has the role of project manager for that project
+	\end{itemize}}
+{\begin{itemize}
+	\q The issue is moved further.
+	\q The issue has as developer the chosen user (chosen by the project manager)
+	\q A notification is sent to the chosen user.
+	\end{itemize}}
+{\begin{itemize}
+	\q The project manager selects a project from the projects page.
+	\q The projects issues are displayed in either the Kanban board format or Todo list format.
+	\q The project manager selects an issue that has the place Todo or In Progress.
+	\q The project manager selects the Assign Issue button.
+	\q A drop-down list appears at the bottom of the interface containing developers for that project.
+	\q The project manager chooses a developer and confirms the action 
+	\end{itemize}}
+{\begin{itemize}
+	\q The project manager does not select any developer and tries to confirm the action. An error is displayed and the user is redirected back to the previous page with no issue changes.
+	\q The project manager does not click on confirm but instead selects any other button or issue. The issue is not moved and no action is taken.
+	\end{itemize}}
+{\begin{itemize}
+	\q A project needs to already exist.
+	\q An issue in the Todo or In Progress needs to be in the project.
+	\end{itemize}}
+\use{Create Project}
+{12/04/21}
+{A user creates a new project}
+{User}
+{\begin{itemize}
+	\q The user is logged in
+\end{itemize}}
+{\begin{itemize}
+	\q A project is created
+	\q The new project's fields(name, description, join code) are set
+	\q The new project will have as owner the user.
+\end{itemize}}
+{\begin{itemize}
+	\q The user navigates to the "Projects" page
+	\q The user clicks the "Create Project" Button
+	\q A small form appears asking for the project's title and description
+	\q The user fills the form and clicks confirm
+\end{itemize}}
+{\begin{itemize}
+	\q The user does not provide a project title, in which case no project will be created and an error will appear.
+	\q The user chooses to do another action without clicking "Confirm" in which case no action is done.
+\end{itemize}}
+{\begin{itemize}
+	\q The user needs to have an account.
+\end{itemize}}%------------------------------------------
+\newp\use{Add developer}
+{12/04/21}
+{A user adds another user to an existing project}
+{Project Manager, Developer}
+{{\begin{itemize}
+	\q The current user is logged in
+	\q The current user has the role of project manager for that project
+\end{itemize}}}
+{\begin{itemize}
+	\q The developer is sent a notification saying that he/she joined the project.
+	\q The developer will have joined the project.
+\end{itemize}}
+{\begin{itemize}
+	\q The project manager navigates to the "Projects" page
+	\q The project manager clicks the "Manage Projects" Button
+	\q A list of owned projects will appear
+	\q The project manager selects a project
+	\q The project manager click on the "Add developer" button
+	\q A small input form asking for the developer's name appears
+	\q The project manager inputs the target user's name and clicks confirm
+	\q On success a notification is sent to the developer
+\end{itemize}}
+{\begin{itemize}
+	\q The user does not provide a valid user-name (empty input, in-existent user, its own user-name) in which case no action is done and an error will appear.
+	\q The user chooses to do another action without clicking "Confirm" in which case no action is done.
+\end{itemize}}
+{\begin{itemize}
+	\q There needs to be at least one more registered user (the user to be added).
+\end{itemize}}
+\newp\use{Remove user from project}
+{12/04/21}
+{The project manager removes a user from an existing project}
+{Project Manger, Developer}
+{\begin{itemize}
+	\q The current user is logged in
+	\q The current user has the role of project manager for that project
+\end{itemize}}
+{\begin{itemize}
+	\q The developer is sent a notification saying that he/she was removed from the project.
+	\q The developer is not associated with the project anymore.
+\end{itemize}}
+{\begin{itemize}
+	\q The project manager navigates to the "Projects" page
+	\q The project manager clicks the "Manage Projects" Button
+	\q A list of owned projects will appear
+	\q The project manager selects a project
+	\q The project manager click on the "Remove developer" button
+	\q A list of users (developers) appears
+	\q The project manager selects the target user's name and clicks confirm
+	\q On success a notification is sent to the developer
+\end{itemize}}
+{\begin{itemize}
+	\q The user does not select any user-name but clicks "Confirm" in which case no action is done and an error will appear.
+	\q The user chooses to do another action without clicking "Confirm" in which case no action is done.
+\end{itemize}}
+{\begin{itemize}
+	\q There needs to be at least one more user in the project (the user to be removed).
+\end{itemize}}
+\newp\use{Remove notification}
+{12/04/21}
+{A user removes a notification}
+{User}
+{\begin{itemize}
+	\q The current user is logged in
+\end{itemize}}
+{\begin{itemize}
+	\q The notification is permanently deleted from the log
+\end{itemize}}
+{\begin{itemize}
+	\q The user selects the notification icon
+	\q A page with notifications appear
+	\q The user clicks the button on the right of the notification
+	\q A small window appears beside the button asking for confirmation
+	\q The users clicks "Yes"
+\end{itemize}}
+{\begin{itemize}
+	\q The user chooses to do another action without clicking "Yes" in which case no action is done.
+\end{itemize}}
+{\begin{itemize}
+	\q There needs to be at least one notification associated with the current user.
+\end{itemize}}
+
+\newpage
+\section{Project Planning}
+\p This is included in a separate document titled: Planning.
+
+\section{Risks and issues}
+\p For the responsive design, the time cost could be too great in this case both members will work on it.
+\p In the worst case scenario the notifications feature is the lowest priority and can be abandoned.
+
+\end{document}

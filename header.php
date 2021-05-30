@@ -16,7 +16,7 @@
 	 <link rel = "stylesheet" href="./style/notifications.css">
 
 	 <script src="scripts/javascript.js"></script>
-	 <link rel="shortcut icon" type="image/png" href="img/icons/favicon.png">
+	 <link rel="shortcut icon" type="image/png" href="img/icons/logo.svg">
 	</head>
 	<body onload="toggleWindow('newProjectWindow','inline-block');
 	toggleWindow('infoWindow','block');toggleWindow('newIssueWindow','inline-block');changeFlexValue('rightCol','newIssueWindow',3.5,2);">

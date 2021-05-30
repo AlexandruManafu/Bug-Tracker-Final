@@ -5,6 +5,13 @@ if(!isset($inProjectFile))
 	header("location: projects.php");
 }
 
+			if(isset($_GET["error"])){
+				createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
+			}
+			else{
+				createIssueDisplay($currentPage,$code,$projectCode,NULL,$userRole);
+			}
+
 echo "<div id='rightCol'>";
 		//$backlog="Backlog";
 		if(!isset($_GET["selectedIssue"]))
@@ -150,7 +157,10 @@ echo "<div id='rightCol'>";
 						echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='issueDeadline' value='".dateDisplay($issue['issueDeadline'])."' placeholder = ''><br>";
 				}
 				else
+				{
+					echo "<input type='hidden' name='issueDeadline' value=".dateDisplay($issue['issueDeadline']).">";
 					echo"<br>";
+				}
 				echo "<br>";
 				echo "<textarea class='details' name='issueDetails' rows='5' placeholder = 'Details'>".$issue["issueDetails"]."</textarea><br>";
 				
@@ -171,8 +181,12 @@ echo "<div id='rightCol'>";
 				if($issue["issuePlace"]=="Completed")
 					echo "<p class='issueInfoFields'>Completed At <br> ".dateDisplay($issue["issueCompletedAt"])."</p>";
 					
-				echo "<div style='max-width: 600px;'>";
-				echo "<pre class='issueDetail'>Details: <br> ".wordwrap($issue["issueDetails"])."<pre>";
+				if(!isMobileDev())
+					$maxWidth = 75;
+				else
+					$maxWidth = 40;
+				echo "<div class = 'issueText'>";
+				echo "<pre class='issueDetail'>Details: <br> ".wordwrap($issue["issueDetails"],$maxWidth,"\n",true)."<pre>";
 				echo "</div>";
 			echo "</div>";
 		}
@@ -182,4 +196,66 @@ echo "<div id='rightCol'>";
 			
 		}
 		echo "</div>";
+		
+		
+	function createIssueDisplay($currentPage,$projectId,$projectCode,$error,$userRole)
+	{
+		echo "<div class='row'>";
+		echo "<div class='leftCol'>";
+			echo "<img class='addIssue' onclick=toggleWindow('newIssueWindow','inline-block');changeFlexValue('rightCol','newIssueWindow',3.5,2);changeMarginValue('deleteProject','newIssueWindow',3.7,25); src='images/icons/add.svg' alt='Create Project' width = 10%>";
+			
+			
+			echo "<div class='confirm' id='newIssueWindow' style='display: none;'>";
+			echo "<form action = 'scripts/createIssue-script.php' method='post'>";
+			
+				echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
+				echo "<input type='hidden' name='projectId' value=".$projectId.">";
+				echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='issueTitle' placeholder = 'Issue Title'><br>";
+				echo "<p style='margin-bottom: 1ex;'>Issue Priority: </p>";
+				echo "<select name='issuePriority' id='account_type'>";
+						echo "<option value=''>Select an option</option>";
+						echo "<option value='1'>Low</option>";
+						echo "<option value='2'>Medium</option>";
+						echo "<option value='3'>High</option>";
+						
+
+				echo "</select>";
+				echo "<br><br>";
+				echo "<textarea class='details' name='issueDetails' rows='5'  placeholder = 'Details'></textarea><br>";
+				
+				
+				echo "<button class='create_button' type='text' name='submit'>Create</button>";
+				
+				
+				echo "</form>";
+			echo "</div>";
+			if($userRole == "manager")
+			{
+				echo "<br><br>";
+				echo "<a class='menu_button' id='manageProjectB' href='manage.php?project=".$projectId."'>Manage Project</a>";
+				
+			}
+			if(isset($error) && $error=="emptyInput" )
+			{	
+				echo "<p class=error style='margin-top:3ex;' = error>No inputs can be empty</p>";
+			}
+			if(isset($error) && $error=="invalidDate" )
+			{	
+				echo "<p class=error style='margin-top:3ex;' = error>Date entered is invalid</p>";
+			}
+			echo "<div class=confirm id=displayCode style='display:none;'>
+					<p>The join code for the current project is:</p><br>
+					<p>".$projectCode."</p>
+				</div>
+			";
+			displayConfirmationWindow("deleteProjectWindow","scripts/updateIssue-script.php",$currentPage,NULL,$projectId,$projectCode,
+			"Are you sure you want to delete the project with all its issues ?","Delete_Project");
+			if(isset($error) && $error=="existActiveIssues" )
+			{	
+				echo "<p class = error>Projects with active issues cannot be deleted.</p>";
+			}
+			
+			echo "</div>";
+
+}
 	 

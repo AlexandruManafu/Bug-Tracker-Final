@@ -1,0 +1,298 @@
+\documentclass{beamer}
+\usepackage[romanian]{babel}
+\usepackage{combelow}
+\usepackage{pgffor}
+
+\useshorthands{'}
+\defineshorthand{'s}{\cb{s}}
+\defineshorthand{'t}{\cb{t}}
+\defineshorthand{'S}{\cb{S}}
+\defineshorthand{'T}{\cb{T}}
+
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+
+
+\definecolor{jade}{rgb}{0.0, 0.66, 0.42}
+\definecolor{charcoal}{rgb}{0.21, 0.27, 0.31}
+\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
+\definecolor{ceruleanblue}{rgb}{0.16, 0.32, 0.75}
+\definecolor{cobalt}{rgb}{0.0, 0.28, 0.67}
+\definecolor{dandelion}{rgb}{0.94, 0.88, 0.19}
+\definecolor{azure(colorwheel)}{rgb}{0.0, 0.5, 1.0}
+\definecolor{blue-green}{rgb}{0.0, 0.87, 0.87}
+
+
+\author[\color{white}Alexandru Manafu]{}
+\title[Bug Tracker]{ \color{azure(colorwheel)}Bug Tracker V2}
+\date{}
+\begin{document}
+
+\setbeamertemplate{frame numbering}[fraction]
+\setbeamercolor{background canvas}{bg=black}
+\setbeamercolor{normal text}{fg=white}
+
+\setbeamercolor{frametitle}{bg=black, fg=white}
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{footline}{\vspace{-5ex}\colorbox{black}{\hspace{1000ex}}}
+
+\newcommand{\slideExample}[2]
+{
+
+\begin{frame}
+\frametitle{ \color{darkgreen} \hyperlink{introduction}{Introduction} \ \hyperlink{motivation}{Motivation} \   \color{jade} \textbf{Example} \ \color{charcoal} \hyperlink{conclusion}{Conclusion}  \color{white}\hspace{5ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+\color{white}
+
+\graphicspath{ {./images/examples/} }
+
+\vspace{-4ex}
+\begin{center}
+#1 :\\ %Project Manager or Developer
+\vspace{2ex}
+\includegraphics[scale=0.35]{#2} %example image name
+\end{center}
+
+\end{frame}
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\slideIntroduction}[2]
+{
+\begin{frame}[label=#1]
+\frametitle{\color{jade}\textbf{Introduction} \ \color{charcoal}    \hyperlink{motivation}{Motivation} \ \hyperlink{content}{Content} \ \hyperlink{conclusion}{Conclusion} \color{white}\hspace{6ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+
+#2
+
+\end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\slideMotivation}[2]
+{
+\begin{frame}[label=#1]
+\frametitle{ \color{darkgreen} \hyperlink{introduction}{Introduction} \ \color{jade} \textbf{Motivation} \ \color{charcoal}  \hyperlink{content}{Content} \ \hyperlink{conclusion}{Conclusion}  \color{white}\hspace{6ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+
+#2
+
+\end{frame}
+}
+\newcommand{\slideContent}[2]
+{
+
+\begin{frame}[label=#1]
+\frametitle{ \color{darkgreen} \hyperlink{introduction}{Introduction} \  \color{darkgreen} \hyperlink{motivation}{Motivation} \ \color{jade}  \textbf{Content} \ \color{charcoal} \hyperlink{conclusion}{Conclusion}  \color{white}\hspace{5ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+
+#2
+
+\end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\slideConclusion}[2]
+{
+\begin{frame}[label=#1]
+\frametitle{ \color{darkgreen} \hyperlink{introduction}{Introduction} \ \hyperlink{motivation}{Motivation} \   \color{darkgreen} \hyperlink{content}{Content} \ \color{jade} \textbf{Conclusion}  \color{white}\hspace{5ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+
+#2
+
+\end{frame}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\slideReferences}[1]
+{
+\begin{frame}
+\frametitle{ \color{darkgreen} \hyperlink{introduction}{Introduction} \ \hyperlink{motivation}{Motivation} \   \color{darkgreen} \hyperlink{content}{Content} \ \color{jade} \textbf{References}  \color{white}\hspace{5ex}{\normalsize $\insertframenumber /\inserttotalframenumber$}}
+
+
+#1
+
+\end{frame}
+}
+
+\newcommand{\q}{\item}
+
+\newcommand{\s}{
+\\
+\vspace{2ex}
+\pause
+}
+
+\begin{frame}
+\vspace{-10ex}
+\textbf{\maketitle}
+\vspace{-28ex}
+\begin{center}
+\vspace{5ex}
+\large
+\color{white}Marius Bijan\\Alexandru Manafu\\
+\vspace{3ex}
+\small
+West University of Timi'soara\\
+Faculty of Mathematics and Informatics\\
+Bachelor Study Program: Computer Science in English\\
+\vspace{3ex}
+\normalsize
+Thursday $30^{th}$ May, 2021\\
+\vspace{3ex}
+\includegraphics[scale=0.13]{logo_uvt.png}
+
+
+
+\end{center}
+\end{frame}
+
+\slideIntroduction{introduction}{
+
+\begin{itemize}
+\color{white}
+\item Brief introduction and the motivation 
+\item Example of using the application 
+\item Challenges and interesting points of the implementation 
+\item Conclusion 
+\end{itemize}
+
+}
+
+\slideIntroduction{}{
+
+\color{white}
+What is a bug tracker?\\
+\pause
+It is an application used for managing projects with each project having 'issues'\ which can be information that describes a task.
+\s
+The issues are generally displayed in a To-Do list or in other formats.\\
+
+}
+
+
+\slideIntroduction{}{
+
+\color{white}
+
+\graphicspath{ {./images/} }
+
+}
+
+\slideMotivation{motivation}
+{
+
+\color{white}
+What is the goal?\\
+\pause
+The implementation of a Bug Tracker that can be used in a multitude of situations and is compatible with mobile devices.
+\s
+Why would anyone use this application?
+\s
+This application could be used by companies that want their own bug-tracker that they could deploy on their local network such that if there is no internet connection or some specific service is offline no work-flows are affected.
+
+%The easiest way to construct a User Interface is by building a website.\\
+
+}
+
+%issue examples
+
+\foreach \n in {1,...,8}
+{
+\slideExample{User 1 with the role Project Manager}{\n manager}
+}
+\foreach \n in {9,...,12}
+{
+\slideExample{User 2 with the role Developer}{\n developer}
+}
+\foreach \n in {13,...,15}
+{
+\slideExample{User 1 with the role Project Manager}{\n manager}
+}
+\foreach \n in {16,...,20}
+{
+\slideExample{User 1 with both roles}{\n manager}
+}
+
+%
+%project managment
+
+\slideContent{content}
+{
+
+\color{white}
+The main difficulties were encountered on the project planning stage where the team lead would have to allocate time for each feature that is to be developed, when allocating time like this, if you ignore outside factors like other projects or school work it can become a mess.
+% maybe some of you guys felt the same
+}
+
+\slideContent{}
+{
+
+\color{white}
+In the planning stage it is sometimes impossible to predict how much time is needed to complete something, this is especially true with lack of experience.
+\s
+
+Because of this the following features had improper deadlines 
+\vspace{1ex}
+\begin{itemize}
+\color{white}
+\q Project Selection Overhaul
+\q Dynamic Roles
+\q Responsive Design
+\q Notifications Feature
+\end{itemize}
+
+}
+
+\slideContent{}
+{
+
+\color{white}
+An interesting aspect of the implementation is reusing and abstracting existing elements while maintaining the integrity of the website while minimizing code duplication.
+\\
+\vspace{1ex}
+\pause
+Some examples of reusing elements:
+\begin{itemize}
+\color{white}
+\q The main menu is contained a file that is included on all other visible pages.
+\q Both the Kanban and To-do formats have the same issue options because they both include the same file.
+\q All Confirmation dialogs and some forms are defined as functions and reused in multiple pages.
+
+\end{itemize}
+
+}
+
+\slideContent{}
+{
+
+\color{white}
+A PHP specific problem arises when you try to reuse functionality on two or more pages and that is knowing where to return.
+\s
+This is solved like so:
+\begin{itemize}
+\color{white}
+\q Somehow get the name of the current page
+\pause
+\q When confirming an action send the name of the current page to the controller (connection between database and interface)
+\pause
+\q At the end of the action simply use that name to return the user to the proper page.
+
+\end{itemize}
+
+}
+
+\slideConclusion{conclusion}
+{
+\color{white}
+
+In conclusion one can never truly complete a complex project and so there are no finished applications only abandoned ones.
+
+}
+
+
+
+
+
+
+
+
+
+\end{document}

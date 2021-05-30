@@ -136,6 +136,7 @@
  @media (max-width: 800px) {
  .container td:nth-child(4),
  .container th:nth-child(4) { display: none; }
+ .container th:nth-child(1) { width: 40% }
  }
 
 .minimumHeight{
@@ -148,4 +149,14 @@
     .container {
       width: 100%;
     }
+	
+	
+	.minimumHeight{
+	min-height: 100px;
+	max-height: 400px;
+	overflow-y: scroll;
+}
+	
+	
+	
  }

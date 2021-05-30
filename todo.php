@@ -40,15 +40,9 @@
 			</table>
 		
 		</div>
-    	<?php
-			if(isset($_GET["error"])){
-				createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
-			}
-			else{
-				createIssueDisplay($currentPage,$code,$projectCode,NULL,$userRole);
-			}			
+		<?php 
+		require_once("projectIssueOptions.php");
 		?>
-		<?php require_once("projectIssueOptions.php");?>
 	</div>
 </div>
 
@@ -95,8 +89,8 @@
 				$issueDeadline = "None";
 			}
 			//<a class='issueButton' href=".$_SESSION['currentPage']."?project=".$projectId."&selectedIssue=".$issueId.">".strval($issueTitle)."</a>
-			if(isMobileDev())
-				$dots = 8;
+			if(!isMobileDev())
+				$dots = 10;
 			else
 				$dots = 15;
             $result .= "<tr><td>".displayIssue($row,$projectId,20,$dots)."</td><td>". $issuePlace."</td><td>". dateDisplay($issueDeadline)."</td><td></tr>";

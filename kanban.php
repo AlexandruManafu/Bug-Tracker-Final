@@ -78,18 +78,7 @@ include('header.php');
 			
 			displayColumn($con,"Completed",$projectCode);
 			
-		echo "</div>"; 
-	
-	
-		if(isset($_GET["error"]))
-		{
-			createIssueDisplay($currentPage,$code,$projectCode,$_GET["error"],$userRole);
-		}
-			else
-		{
-			createIssueDisplay($currentPage,$code,$projectCode,NULL,$userRole);
-		}
-				
+		echo "</div>"; 				
 		require_once "projectIssueOptions.php";
 			
 	?>
