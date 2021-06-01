@@ -31,7 +31,6 @@ include('header.php');
 			<?php
 				echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
 				echo "<input type='hidden' name='projectId' value=".$id.">";
-				echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
 				echo "<input type='hidden' name='targetPlace' value='Edit_Project'>";
 				
 				echo "<input class='bigger-custom-inputIssues' type='text' style='margin-left:-0.5ex;' name='projectName' value=".$projectFields["projectName"]." placeholder = 'Issue Title'><br>";
@@ -59,7 +58,6 @@ include('header.php');
 				<?php
 					echo "<input type='hidden' name='previousPage' value=".$currentPage.">";
 					echo "<input type='hidden' name='projectId' value=".$id.">";
-					echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
 				?>
 				<input class='bigger-custom-input' type='text' name='userName' style='margin-left:0.5ex;' placeholder = 'User Name'><br>
 				<input type='hidden' name='targetPlace' value='Add_Developer'>
@@ -68,11 +66,11 @@ include('header.php');
 		</div>
 	<?php
 		
-		displayAssignWindow("removeDevWindow","scripts/manageProject-script.php",$currentPage,null,$id,$projectCode,
+		displayAssignWindow("removeDevWindow","scripts/manageProject-script.php",$currentPage,null,$id,
 		"Are you sure you want to remove the selected developer from the project?","Remove_Developer",$con);
 		
 		displaySpecialButton("deleteProject","exclusiveToggleWindow('confirm','deleteProjectWindow','block');","Delete Project");
-		displayConfirmationWindow("deleteProjectWindow","scripts/manageProject-script.php",$currentPage,NULL,$id,$projectCode,
+		displayConfirmationWindow("deleteProjectWindow","scripts/manageProject-script.php",$currentPage,NULL,$id,
 			"Are you sure you want to delete the project with all its issues ?","Delete_Project");
 			
 		if(isset($_GET["error"]))

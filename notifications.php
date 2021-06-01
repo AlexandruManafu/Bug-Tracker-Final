@@ -35,7 +35,7 @@ include('header.php');
 				echo "<br>";
 				displayButton("exclusiveToggleWindow('confirm','deleteNotifications','block');", "Delete Notifications");	
 				
-				displayConfirmationWindow("deleteNotifications","scripts/deleteNotifications-script.php",$currentPage,null,null,null,
+				displayConfirmationWindow("deleteNotifications","scripts/deleteNotifications-script.php",$currentPage,null,null,
 				"Are you sure you want to delete all your notifications?","Delete",null,"deleteNotifications");
 				}
 					

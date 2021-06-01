@@ -17,7 +17,7 @@ if(isset($_POST["submit"]))
 	
 	if(empty($title) || empty($details) || empty($priority))
 	{
-		header("location: ../".$prevPage."?project=".$projectCode."&error=emptyInput");
+		header("location: ../".$prevPage."?project=".$projectId."&error=emptyInput");
 		exit();
 	}
 	

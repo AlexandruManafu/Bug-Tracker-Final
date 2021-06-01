@@ -9,18 +9,16 @@ if(isset($_POST["no"]))
 else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 {
 	session_start();
+	require_once 'database-handler.php';
+	require_once 'functions.php';
 	
 	$user = $_SESSION["usersName"];
 	
 	$code = $_POST["projectId"];
-	$projectCode = $_POST["projectCode"];
+	$projectCode = getProjectCode($con,$code);
 	
 	$action = $_POST["targetPlace"];
 	$prevPage = $_POST["previousPage"];
-	
-	require_once 'database-handler.php';
-	require_once 'functions.php';
-	
 	
 	if($action == "Create_Project")
 	{

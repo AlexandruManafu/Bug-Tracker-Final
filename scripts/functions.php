@@ -805,7 +805,7 @@ function displayIssue($issue,$projectId,$size,$maxTextLen)
 		</a>";		
 	}
 
-function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$targetPlace)
+function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$projectId,$message,$targetPlace)
 {
 	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
 	echo "<form action = ".$formAction." method='post'>";
@@ -816,7 +816,6 @@ function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$
 			echo "<input type='hidden' name='issueId' value=".$issue["issueId"].">";
 		}
 		echo "<input type='hidden' name='projectId' value=".$projectId.">";
-		echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
 		
 		echo "<input type='hidden' name='targetPlace' value=".$targetPlace.">";
 		echo "<p>".$message."</p>";
@@ -827,8 +826,9 @@ function displayConfirmationWindow($elementId,$formAction,$previousPage,$issue,$
 	echo "</div>";
 }
 
-function displayAssignWindow($elementId,$formAction,$previousPage,$issue,$projectId,$projectCode,$message,$targetPlace,$con)
+function displayAssignWindow($elementId,$formAction,$previousPage,$issue,$projectId,$message,$targetPlace,$con)
 {
+	$projectCode = getProjectCode($con,$projectId);
 	$developers = listDevelopers($con,$projectCode);
 	echo "<div class='confirm' id=".$elementId." style='display:none;margin-left: 2ex;'>";
 	echo "<form action = ".$formAction." method='post'>";
@@ -849,7 +849,6 @@ function displayAssignWindow($elementId,$formAction,$previousPage,$issue,$projec
 		echo "<input type='hidden' name='issueId' value=".$issue["issueId"].">";
 	}
 	echo "<input type='hidden' name='projectId' value=".$projectId.">";
-	echo "<input type='hidden' name='projectCode' value=".$projectCode.">";
 		
 	echo "<input type='hidden' name='targetPlace' value=".$targetPlace.">";
 	echo "<p>".$message."</p>";

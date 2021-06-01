@@ -2,7 +2,6 @@
 if(isset($_POST["no"]) && isset($_POST["issueId"]))
 {
 	$code = $_POST["projectId"];
-	$projectCode = $_POST["projectCode"];
 	$issueId = $_POST["issueId"];
 	$prevPage = $_POST["previousPage"];
 	header("location: ../".$prevPage."?project=".$code."&selectedIssue=".$issueId);
@@ -18,18 +17,18 @@ else if(isset($_POST["no"]))
 else if(isset($_POST["yes"]))
 {
 	session_start();
+	require_once 'database-handler.php';
+	require_once 'functions.php';
 	
 	$user = $_SESSION["usersName"];
 	$issueId = $_POST["issueId"];
 	
 	$code = $_POST["projectId"];
-	$projectCode = $_POST["projectCode"];
+	$projectCode = getProjectCode($con,$code);
 	
 	$newPlace = $_POST["targetPlace"];
 	$prevPage = $_POST["previousPage"];
 	
-	require_once 'database-handler.php';
-	require_once 'functions.php';
 	
 	if($newPlace == "Backlog")
 	{
