@@ -38,10 +38,12 @@ echo "<div id='rightCol'>";
 					displayButton("exclusiveToggleWindow('confirm','issueDelete','block');","Delete Issue");
 				}
 				displayButton("exclusiveToggleWindow('confirm','editWindow','block');","Edit Issue");
+				editIssueDisplay($currentPage,$code,$issue,$userRole);
 			}
 			else if($userRole == "developer" && issuePermissions($con))
 			{
 				displayButton("exclusiveToggleWindow('confirm','editWindow','block');","Edit Issue");
+				editIssueDisplay($currentPage,$code,$issue,$userRole);
 			}
 			
 			if(issueInPlace($con,$_GET["selectedIssue"],"Backlog") && $userRole == "manager")
@@ -128,7 +130,7 @@ echo "<div id='rightCol'>";
 			
 			if(issuePermissions($con))
 			{
-				editIssueDisplay($currentPage,$code,$issue,$userRole);
+				//editIssueDisplay($currentPage,$code,$issue,$userRole);
 			}
 				
 			if(issueInPlace($con,$_GET["selectedIssue"],"Backlog"))

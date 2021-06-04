@@ -38,6 +38,7 @@ else if(isset($_POST["yes"]) || isset($_POST["submit"]))
 	}
 	else if($action == "Join_Project")
 	{
+		$projectCode = $_POST["projectCode"];
 		if(projectExists($con,$projectCode) && !isDevInProject($con,$projectCode,$user) && !isOwnerProject($con,$projectCode,$user) )
 		{
 			addDevToProject($con,$projectCode,$user);
